@@ -1,0 +1,290 @@
+<html>
+<head>
+<!--meta charset="utf-8">
+<meta name="description" content="">
+<meta name="HandheldFriendly" content="True">
+<meta name="MobileOptimized" content="320">
+<meta name="viewport" content="initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no"-->
+<title>Bioinformatics Tutorials by Santhilal :: R </title>
+<!--link rel="alternate" type="application/rss+xml" title="frittt.com" href="feed/index.html">
+<link href="http://fonts.googleapis.com/css?family=Raleway:700,300" rel="stylesheet"
+        type="text/css"-->
+<link rel="stylesheet" href="css/style.css">
+<link rel="stylesheet" href="css/prettify.css">
+</head>
+<body>
+<div class="wrapper">
+<nav>
+ 
+  	<div class="pull-left">
+    	<h1><a href="javascript:"><img src="img/icon.png" alt="Free Documentation Template Icon" /> <span>DocWeb</span></a></h1>
+    </div>
+    
+    <div class="pull-right">
+    	<a href="https://www.biostars.org/u/12958/" target="_blank" class="btn btn-download"><img src="img/download.png" width="25" alt="Santhilal Subhash" /> MyBlog</a>
+    </div>
+
+</nav>
+<header>
+  <div class="container">
+    <h2 class="lone-header">Bioinformatics Tutorials by Santhilal :: R</h2>
+  </div>
+</header>
+<section>
+  <div class="container">
+    <ul class="docs-nav">
+
+      <li><strong>Basic R</strong></li>
+      <li><a href="#intro-R" class="cc-active">Intro to R</a></li>
+      <li><a href="#intallation-R" class="cc-active">Install R & bioconductor</a></li>
+      <li><a href="#matrix-R" class="cc-active">Matrices in R</a></li>
+      <li><a href="#corplot" class="cc-active">Correlation function</a></li>
+      <li><a href="#subset-R" class="cc-active">Subsetting table</a></li>
+      <li><a href="#R-visual" class="cc-active">Visualizations in R</a></li>
+      <li><a href="#server" class="cc-active">Introduction to server</a></li>
+	  
+
+    </ul>
+    <div class="docs-content">
+<div style="float:left"><a href="index.html"><< Previous: UNIX</div><div style="float:right"><a href="rnaseq_tutorial.html">Next: RNA-seq >></a></div><br>
+     
+
+<hr></hr>
+      <h3 id="intro-R"> Basic R Introduction</h3>
+R is a UNIX like platform where you make use of different statistical functions. There are also bioinformatics tools developed on R platform. Imagine UNIX as a platform and AWK as tool developed on UNIX platform. Likewise you have R and set of tools developed by different people for different bioinformatics analysis purpose. There are group of people involved in developing bioinformatics tools/packages using R platform called as <a href="http://bioconductor.org/" target="new">Bioconductor</a>. You must have notices in my last sentence I was mentioning a word 'package'. we call it package because it uses set of different commands from R in order to perform certain task (example, sequence matching or sequence alignment) and deliver it to the users as a complete package where users do not have to build the package from the scratch by themselves.<br><br>
+
+In this tutorial we are going to learn very minimal about R which is necessary for the course. If you like to learn complete R from very basic to advanced level, please <a href="https://cran.r-project.org/manuals.html" target="new">click here</a>. Some bioinformaticians manage all their work just by using R programming along with basic UNIX without need for learning complex programming languages like PERL, Python, JAVA etc,. If you become master in UNIX and R programming, you can do any kind of bioinformatics analysis and also you will able to develop tools on your own.<br><br>
+
+
+
+       <h3 id="intallation-R"> Installing R and bioconductor</h3>
+
+<b>Installing and opening R:</b>
+
+<pre class="prettyprint">
+$$ sudo apt-get install r-base
+$$ R
+</pre>
+
+<b>Installing Bioconductor inside R:</b><br>
+## try "http://", if "https://" URLs are not supported
+
+<pre class="prettyprint">
+> source("https://bioconductor.org/biocLite.R")
+> biocLite()
+</pre>
+
+<b>Installing Bioconductor package edgeR:</b><br>
+
+EdgeR is an bioconductor package (<a href="http://bioconductor.org/packages/release/bioc/vignettes/edgeR/inst/doc/edgeRUsersGuide.pdf" target="new">User guide</a>) used for differential gene expression analysis of RNA-seq samples. There are many packages available for this purpose. You have to choose the package by reading the user guide of the particular package. This used guide will tell you about the type of statistics it uses and in some case algorithms. It is always good habit for a bioinformatician to read the documentation/user guide of particular tool before using it. In the edgeR user guide you will find section 1.4 (Quick start) where you can choose these optimal steps needed for complete differential expression analysis. If you would like to alter the normalization procedure or different statistics, you can read the guide and make changes to the steps accordingly.
+
+<pre class="prettyprint">
+> source("https://bioconductor.org/biocLite.R")
+> biocLite("edgeR")
+</pre>
+
+<b>Installing packages other than Bioconductor:</b><br>
+
+Lets install a package designed to generate heatmap. There is default heatmap package in R, but it is very primitive and gives low quality boring heatmaps (Image Left). Were are going to install a package called pretty heatmap '<a href="https://cran.r-project.org/web/packages/pheatmap/index.html" target="new">pheatmap</a>' (Image Right) which generates good quality heatmap and offers lot of customization.
+
+<pre class="prettyprint">
+> install.packages(pkgs="pheatmap")
+</pre>
+
+<b>To load installed package:</b>
+
+<pre class="prettyprint">
+> library(pheatmap)
+> library(edgeR)
+</pre>
+
+<b>To check the usage or documentation:</b>
+
+<pre class="prettyprint">
+> help(pheatmap)
+> ?pheatmap # Alternative to help
+> ?edgeR
+</pre>
+
+
+<img src="http://journals.plos.org/plosone/article/figure/image?size=large&id=10.1371/journal.pone.0106318.g001" width="300" height="800"></img><img src="https://cloud.githubusercontent.com/assets/181403/12646618/30b70a76-c59f-11e5-8fdb-aab0fda50726.png" width="600" height="800"></img>
+
+<br><br><br>
+
+<h3 id="matrix-R"> Matrices in R</h3>
+
+<b>Creating matrix in R:</b>
+
+<pre class="prettyprint">
+> x <- matrix(c(1,2,3,4,5,6),nrow=2,ncol=3)
+> x # Check created matrix
+> t(x) # Reverse or transpose matrix
+> y <- t(x) # Save transposed matrix to another variable
+>
+</pre>
+
+<b>Load expression matrix (tab-separated table) in R:</b>
+
+<pre class="prettyprint">
+> mymatrix <- read.table("http://www.kandurilab.org/users/santhilal/courses/R/hg38_ensembl_GRCh38.87_counts.matrix", header=TRUE, sep="\t",row.names=1)
+> dim(mymatrix) # Checknumber of rows and columns in the matrix (not counting the header and rownames)
+> head(mymatrix) # First 10 entries
+> mymatrix[1,1] # accessing first row first column
+> mymatrix[2,1] # accessing second row first column
+> mymatrix[1:10,] # accessing first 10 rows and all columns
+> mymatrix[1:10,1:2] # accessing first 10 rows and first two columns
+> mymatrix[1:10,c(1,3,5)] # accessing first 10 rows and 1,3 and 5th columns
+</pre>
+
+<mark><b>Question R1: Atleast two different commands/ways to display first 20 entries from above 'mymatrix'.</b></mark><br><br>
+
+<h3 id="corplot"> Correlations and plots </h3>
+
+<b>Correlation:</b>
+<pre class="prettyprint">
+> mymatrix_cor <- cor(mymatrix)
+> pheatmap(mymatrix_cor)
+</pre>
+
+<b>Saving the plot:</b>
+<pre class="prettyprint">
+> png("./correlation.png") # Save the plot in current directory. To check directory you are in, getwd()
+> pheatmap(mymatrix_cor)
+> dev.off()
+</pre>
+<!-- xdg-open correlation.png-->
+<mark><b>Question R2: Above correlation plot was generated using default 'pearson' method for correlation. Please generate same plot using 'spearman' correlation and save as JPEG file (complete code from loading the matrix till saving the plot has to be reported for the answer).</b></mark><br><br>
+
+
+<h3 id="subset-R"> Subsetting & saving table in R </h3>
+
+<b>Load annotation table from 'practice':</b>
+<pre class="prettyprint">
+> myannot <- read.table("practice/annotation/Homo_sapiens.GRCh38.87_annotation.table", header=TRUE, sep="\t", row.names=1) # Importing a text file into R
+> colnames(myannot) # Check column names of loaded table
+> summary(myannot$Class) # Summarize data from one column
+</pre>
+
+<b>Subsetting:</b>
+<pre class="prettyprint">
+> myannot_lnc <- subset(myannot,myannot$Class=="lincRNA") # Extract only 'lincRNA' entries
+> myannot_allNC <- subset(myannot,!(myannot$Class=="protein_coding")) # Extract all non-coding RNAs entries
+> myannot_misc <- subset(myannot,myannot$Class=="lincRNA" | myannot$Class=="antisense") # Extract entries of class 'lincRNA' and 'antisense'
+</pre>
+
+<mark><b>Question R3: How many genes are having length greater than or equal to 600 nts from 'myannot_misc' (just report the code you used to get the numbers)?</b></mark><br><br>
+<!--
+> myannot_misc_len600 <- subset(myannot_misc,myannot_misc$Length>=600)
+> dim(myannot_misc_len600)
+-->
+
+<b>Saving the generated results as table on your local system:</b><br>
+
+<pre class="prettyprint">
+> write.table(myannot_lnc,"./myannot_lnc_res.table", sep="\t", quote=FALSE) # quote, FALSE will remove the double-quotes generated during write.table function around each entries in the result
+</pre>
+
+Since the generated results will have row names in the first place without any column name/id. We are going to add one more column to the result using row names and then assign the column names as "Geneid" to that new column.
+
+<pre class="prettyprint">
+> myannot_lnc_new <- cbind(rownames(myannot_lnc),myannot_lnc) # Merging/adding one new column using row names of the same table
+> colnames(myannot_lnc_new)[1] <- "Geneid" # Add column name 'Geneid' to newly added/first column
+> write.table(myannot_lnc_new,"./myannot_lnc_new_res.table", sep="\t", quote=FALSE)
+</pre>
+
+<mark><b>Question R4: Like above task save the results 'myannot_allNC' and 'myannot_misc' to a file.</b></mark><br><br>
+
+
+<h3 id="R-visual"> Visualizations in R </h3>
+
+
+Bar Graph:
+
+<pre class="prettyprint">
+> barplot(myannot_lnc$Length)
+</pre>
+
+<a href="http://www.statmethods.net/graphs/bar.html" target="new">More bar plots examples</a>.<br>
+
+Boxplot: (<a href="http://www.physics.csbsju.edu/stats/box2.html" target="new">Tip</a>)
+
+<pre class="prettyprint">
+> boxplot(myannot_lnc$Length)
+> boxplot(myannot_lnc$Length, outline=FALSE)
+> boxplot(myannot_misc$Length~myannot_misc$Class) # Boxplot of length by assigning 'Class' as different groups
+> boxplot(myannot_misc$Length~droplevels(myannot_misc$Class)) # Same as above except that we are dropping the other classes having 'zero' values
+> boxplot(myannot_misc$Length~droplevels(myannot_misc$Class), outline=FALSE) # Removing outliers
+</pre>
+
+<a href="http://www.statmethods.net/graphs/boxplot.html" target="new">More boxplots examples</a>.<br>
+
+
+
+
+Histogram: (<a href="https://www.mathsisfun.com/data/histograms.html" target="new">Tip</a>)
+
+<pre class="prettyprint">
+> hist(myannot_lnc$Length) # Plot the length distribution for all the genes
+> hist(myannot_lnc$Length[myannot_lnc$Length<1000]) # Plot the length distribution for genes shorter than 1000 nts
+</pre>
+
+<a href="http://www.statmethods.net/graphs/density.html" target="new">More histogram and density plots examples</a>.<br>
+
+
+Pie Chart: (<a href="https://www.mathsisfun.com/data/pie-charts.html" target="new">Tip</a>)
+
+<pre class="prettyprint">
+> pie(summary(myannot$Class))
+</pre>
+
+<a href="http://www.statmethods.net/graphs/pie.html" target="new">More pie chart examples</a>.<br>
+
+
+Scatter Plot: (<a href="https://www.mathsisfun.com/data/scatter-xy-plots.html" target="new">Tip</a>)
+
+<pre class="prettyprint">
+> plot(mymatrix$Control1,mymatrix$Control2)
+> abline(h=70000) # Adding random horizontal line
+> abline(v=80000) # Adding random verticle line. To make it in one step abline(h=70000,v=80000).
+> mylm <- lm(mymatrix$Control1~mymatrix$Control2) # Calculating regression line
+> abline(mylm, col="red") # Adding regression line to the plot
+</pre>
+
+<mark><b>Question R5: Scatter plot Log2 transformed expression values of 'Control1' and 'Control2' from above 'mymatrix'. Report similar code as above with your answer to the question. </b></mark><br><br>
+
+
+
+<a href="http://www.stat.yale.edu/Courses/1997-98/101/linreg.htm" target="new">More information on Regression lines</a><br>
+
+
+<h3 id="server"> Introduction to remote server (cloud) </h3>
+
+This section is the lecture with one assignment (Main assignment 4). The course participants will get a email with all lecture slides and the assignment questions.
+
+
+<hr></hr>
+
+
+<div style="float:left"><a href="index.html"><< Previous: UNIX</div><div style="float:right"><a href="rnaseq_tutorial.html">Next: RNA-seq >></div>
+      
+
+    </div>
+  </div>
+</section>
+<section class="vibrant centered">
+  <div class="">
+    <h4> This documentation was prepared by Santhilal Subhash. If it was useful, please write a recommendation on my <a href="https://www.linkedin.com/in/santhilal-subhash-56b97237/" target="_blank">Linkedin profile</a>. Enjoy! :)</h4>
+  </div>
+</section>
+<footer>
+  <div class="">
+    <p> &copy; Copyright Santhilal Subhash. All Rights Reserved.</p>
+  </div>
+</footer>
+</div>
+<script src="js/jquery.min.js"></script> 
+<script type="text/javascript" src="js/prettify/prettify.js"></script> 
+<script src="https://google-code-prettify.googlecode.com/svn/loader/run_prettify.js?lang=css&skin=sunburst"></script>
+<script src="js/layout.js"></script>
+</body>
+</html>

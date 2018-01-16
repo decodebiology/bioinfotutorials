@@ -1,0 +1,598 @@
+<html>
+<head>
+<!--meta charset="utf-8">
+<meta name="description" content="">
+<meta name="HandheldFriendly" content="True">
+<meta name="MobileOptimized" content="320">
+<meta name="viewport" content="initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no"-->
+<title>Bioinformatics Tutorials by Santhilal :: UNIX</title>
+<!--link rel="alternate" type="application/rss+xml" title="frittt.com" href="feed/index.html">
+<link href="http://fonts.googleapis.com/css?family=Raleway:700,300" rel="stylesheet"
+        type="text/css"-->
+<link rel="stylesheet" href="css/style.css">
+<link rel="stylesheet" href="css/prettify.css">
+</head>
+<body>
+<div class="wrapper">
+<nav>
+ 
+  	<div class="pull-left">
+    	<h1><a href="javascript:"><img src="img/icon.png" alt="Free Documentation Template Icon" /> <span>DocWeb</span></a></h1>
+    </div>
+    
+    <div class="pull-right">
+    	<a href="https://www.biostars.org/u/12958/" target="_blank" class="btn btn-download"><img src="img/download.png" width="25" alt="Santhilal Subhash" /> MyBlog</a>
+    </div>
+
+</nav>
+<header>
+  <div class="container">
+    <h2 class="lone-header">Bioinformatics Tutorials by Santhilal :: UNIX</h2>
+  </div>
+</header>
+<section>
+  <div class="container">
+    <ul class="docs-nav">
+      <li><strong>Basic UNIX Commands</strong></li>
+	<li><a href="#intro-unix" class="cc-active">Introduction</a></li>
+	<li><a href="#wget" class="cc-active">wget</a></li>
+	<li><a href="#ls" class="cc-active">ls</a></li>
+	<li><a href="#pwd" class="cc-active">pwd</a></li>
+	<li><a href="#mkdir" class="cc-active">mkdir</a></li>
+	<li><a href="#mv" class="cc-active">cp/rm/mv</a></li>
+	<li><a href="#cd" class="cc-active">cd</a></li>
+	<li><a href="#head" class="cc-active">head/more/less</a></li>
+
+	<li><a href="#cat" class="cc-active">cat</a></li>
+	<li><a href="#wc" class="cc-active">wc</a></li>
+
+	<li><a href="#grep" class="cc-active">grep</a></li>
+	<li><a href="#unique" class="cc-active">unique</a></li>
+	<li><a href="#sort" class="cc-active">sort</a></li>
+	<li><a href="#comm" class="cc-active">comm</a></li>
+	<li><a href="#piping" class="cc-active">Advanced pipe</a></li>
+	<li><a href="#sed" class="cc-active">sed</a></li>
+	<li><a href="#tr" class="cc-active">tr</a></li>
+	<li><a href="#join" class="cc-active">join</a></li>
+<li class="separator"></li>
+      <li><strong>Advanced UNIX</strong></li>
+      <li><a href="#AWK" class="cc-active">awk</a></li>
+      <li><a href="#assignment1" class="cc-active">Assignments</a></li>
+      <li><a href="#bash" class="cc-active">BASH scripting</a></li>
+<li class="separator"></li>
+
+    </ul>
+    <div class="docs-content">
+<div style="float:right"><a href="R_tutorial.html">Next: R tutorial >></a></div><br>
+<hr></hr>
+		
+      <h2> Getting Started</h2>
+      <h3 id="intro-unix"> Introduction</h3>
+	In order to practice UNIX commands you need a workspace called <b>shell</b> or <b>shell prompt</b>. This shell is an interface which passes commands to the UNIX system to do different tasks depend on the commands provided by the user. All the commands from this tutorial can be run on Linux/Ubuntu terminal or Microsoft Windows 10 bash utility. Get description of commands from <a href="http://explainshell.com/" target="new">http://explainshell.com</a>.
+	<h3 id="wget"> Retrieve files or directories from online (FTP/HTTP)</h3>
+Since you do not have any files in your home directory, you will be using the files prepared for this course. With wget utility from unix, you can download any files from web to your local directory in Linux.
+
+<pre class="prettyprint">
+
+$$ wget http://kandurilab.org/users/santhilal/courses/UNIX/materials/course_file_repo.zip
+
+
+</pre>
+
+<mark>Note: You will also learn in this course how to retrieve multiple files from the web at once.</mark>
+
+
+      <h3 id="ls"> Listing files in the directory/folder</h3>
+Please list the files and folders in your home folder. <br>
+
+Shows all the files and folders in the current directory:
+<pre class="prettyprint">
+$$ ls
+course_file_repo.zip
+</pre>
+Shows all the files and folders in the current directory in long listing format:
+<pre class="prettyprint">
+$$ ls -l
+-rw-rw-r-- 1 santhilal santhilal 1538218 Mar  9 15:05 course_file_repo.zip
+</pre>
+<pre class="prettyprint">
+$$ ls -lh
+-rw-rw-r-- 1 santhilal santhilal 1.5M Mar  9 15:05 course_file_repo.zip
+</pre>
+
+<mark><b>Question U1: What is the difference between 2nd and 3rd command ? In what situation 3rd command will be useful ? </b></mark><br>
+Tip: Read more information on <b>ls</b> command from the following <a href="https://linuxconfig.org/understanding-of-ls-command-with-a-long-listing-format-output-with-permission-bits" target="new">link</a>.
+
+      <h3 id="pwd"> Check your working directory/folder</h3>
+<pre class="prettyprint">
+$$ pwd
+/home/santhilal
+</pre>
+	<!--img src="img/unix_filesystem.gif"></img-->
+      <h3 id="mkdir"> Create directory/folder</h3>
+<pre class="prettyprint">
+$$ mkdir practice
+$$ ls
+course_file_repo.zip <b>practice</b>
+</pre>
+      <h3 id="mv"> Copy / Remove/ Rename/ Create folder/files</h3>
+<pre class="prettyprint">
+$$ cp course_file_repo.zip <b>practice</b>/
+$$ ls
+course_file_repo.zip <b>practice</b>
+</pre>
+
+
+
+Above command copied your file to the newly created directory 'practice'. Now you have two copies of 'course_file_repo.zip', one in home directory and another in 'practice' directory. You remove the one from your home directory to manage your space efficiently. Whenever you remove some file, always check whether you are the right directory or removing the right file. Because in command line you do not have 'undo' option to bring your files back.<br>
+TIP: Whenever you want to move some files to another directory, always use copy 'cp' command to copy it from source to destination directory and then use 'rm' to remove it from the source directory. You may use the directly the move 'mv' command to move your files from source to destination directory at your own risk.
+
+
+<pre class="prettyprint">
+
+$$ pwd
+$$ /home/santhilal
+$$ rm course_file_repo.zip
+$$ ls
+$$ <b>practice</b>
+
+
+</pre>
+
+<b>Task</b>: We are going how to, <br>
+
+1) Create a folder named 'dummy' and a files inside folder 'dummy' named 'file1.txt' and 'file2.txt'<br>
+2) Edit the content of the files<br>
+3) Rename folder to 'mydummy'<br>
+4) Rename files to 'file1.txt' -> 'myfile1.txt', 'file2.txt' -> 'myfile2.txt'<br>
+5) Remove file from the directory<br>
+6) Remove a complete folder<br>
+
+Step 1: 
+
+<pre class="prettyprint">
+$$ mkdir dummy
+$$ cd dummy
+$$ nano file1.txt file2.txt
+</pre>
+The above 'nano' command will create two files and open two files as empty files. For switching between files use 'ALT+.' (Next file) and 'ALT+,' (Previous file). Now switch to 'file1.txt' and type "This is my first file" and save the file using 'CNTRL+O' (it will ask to confirm the file name, press ENTER to confirm). Now you saved 'file1.txt' and to exit the 'file1.txt' press 'CNTRL+X'. The 'file1.txt' will exit and show the remaining file which is 'file2.txt'. Type "This is my second file", save and exit the file.<br>
+
+Step 2: Add second lines to both the files as 'First file is now edited' ('file1.txt') and 'Second file is now edited' ('file2.txt') <br>
+
+<pre class="prettyprint">
+
+$$ nano file1.txt file2.txt
+
+</pre>
+
+Step 3:<br>
+
+<pre class="prettyprint">
+
+$$ pwd
+$$ /home/santhilal/dummy
+$$ cd ..
+$$ mv dummy mydummy
+
+</pre>
+
+Step 4:<br>
+
+Similarly rename 'file1.txt' -> 'myfile1.txt', 'file2.txt' -> 'myfile2.txt'<br><br>
+Let's merge the files
+
+<pre class="prettyprint">
+
+$$ cat myfile1 myfile2 > mergedfile.txt
+$$ cat mergedfile.txt
+
+</pre>
+
+Step 5: Removing file<br>
+
+<pre class="prettyprint">
+
+$$ rm mergedfile.txt
+
+</pre>
+
+Removing files start with 'myfile'<br>
+
+<pre class="prettyprint">
+
+$$ rm myfile*
+
+</pre>
+
+Step 6: To remove directory and their sub-directories or files inside the directories, we command the shell to 'recursively (-r)' remove all the contents.<br>
+
+<pre class="prettyprint">
+
+$$ rm -r mydummy
+
+</pre>
+
+      <h3 id="cd"> Change or navigate directories</h3>
+<pre class="prettyprint">
+$$ cd <b>practice</b>/
+$$ ls
+course_file_repo.zip
+</pre>
+Now uncompress the zip file using '<b>unzip</b>' command. If unzip command is not found/installed, please install by typing.
+<pre class="prettyprint">
+$$ sudo apt-get install unzip
+</pre>
+Unzip using following command.
+<pre class="prettyprint">
+$$ unzip course_file_repo.zip
+</pre>
+<mark><b>Question U2: How many folders are in 'course_file_repo.zip' ? Please check the size of individual files in each folder and report.</mark></b>
+
+      <h3 id="head"> Display part of content of the file</h3>
+Now goto directory/folder 'gene_lists'.
+<pre class="prettyprint">
+$$ cd gene_lists
+</pre>
+List the files in the directory.
+<pre class="prettyprint">
+$$ ls
+</pre>
+Try these commands.
+<pre class="prettyprint">
+$$ head H0.list
+$$ head H0.list H12.list
+$$ less H0.list
+$$ more H0.list
+
+<mark>Note: To exit from 'more' and 'less' commands, just type 'q'.</mark>
+
+</pre>
+
+      <h3 id="cat"> Display complete text file</h3>
+<pre class="prettyprint">
+$$ cat ambiguous.list
+</pre>
+<mark>Tip: If the file is bigger (say million lines) and you executed the above command, it will start printing files line by line on screen. To stop printing just type '<b>Cntrl+c</b>'.</mark>
+      <h3 id="wc"> Count words or lines</h3>
+<pre class="prettyprint">
+$$ wc -l H0.list
+</pre>
+To get number of genes from all the list in the directory.
+<pre class="prettyprint">
+$$ wc -l *.list
+</pre>
+In the above command '<b>*</b>' is wild-card character. It tells the command to check number of genes/lines in the files where the file names ends with '<b>.list</b>' (match all the files ending with '.list'). Try commands 'wc' and 'wc -c' over files.
+
+      <h3 id="grep"> matching word or pattern in the files (start pipe: combining different commands to get required output)</h3>
+Match genes start with 'USP'.
+<pre class="prettyprint">
+$$ cat H0.list | grep "^USP*"
+$$ cat H0.list | grep "USP*"
+$$ cat H0.list | grep "\.[0-9]$"
+</pre>
+Match genes ending with '.' followed by some digit/number.
+<pre class="prettyprint">
+$$ cat H0.list | grep "\.[0-9]$"
+</pre>
+In the above command '\' is used to escape '.' character to be used as pattern matching expression. See the difference by removing '\'. You will see all the genes ending with some number with preceeding one character/number match. In short '.' in pattern matching means match any one letter/character/digit. Lean about pattern matching from the following <a href="http://www.thegeekstuff.com/2011/01/regular-expressions-in-grep-command/?ref" target="new">link</a>.
+Try these examples to know the significance of '.' in pattern matching.
+<pre class="prettyprint">
+$$ cat H0.list | grep "USP."
+$$ cat H0.list | grep "USP.."
+</pre>
+The first command will match one character after 'USP' and the next one matches two character after it.<br>
+
+<mark><b>Question U3: How do you print the number of genes starts with 'RP11-' and ends with number '3' in H0.list and H12.list? I want you to print the number, not the genes. Please write the command you used for getting the results.</b></mark>
+<!--h1>Answer: cat H0.list | grep "^RP11-" | grep "3$" | wc -l and cat H12.list | grep "^RP11-" | grep "3$" | wc -l</h1-->
+
+      <h3 id="unique"> Get unique items from the file</h3>
+
+Check what are the genes repeated in the list 'ambiguous.list',
+<pre class="prettyprint">
+
+$$ cat ambiguous.list | sort | uniq -d
+
+</pre>
+Check genes wihtout duplicate entries,
+<pre class="prettyprint">
+
+$$ cat ambiguous.list | sort | uniq -u
+
+</pre>
+
+Making a list without any duplicate gene entries,
+<pre class="prettyprint">
+
+$$ cat ambiguous.list | sort | uniq > ambiguous_noduplicates.list
+
+</pre>
+
+      <h3 id="sort"> Sorting items in file</h3>
+
+<pre class="prettyprint">
+
+$$ sort H0.list > H0_sorted.list
+$$ sort H12.list > H12_sorted.list
+
+</pre>
+
+<mark><b>Question U4: In the above example, you will get sorted list as 'A->Z'. What will be your command to get 'Z->A' order ?</b></mark>
+
+      <h3 id="comm"> Overlaps between two lists</h3>
+
+<img src="img/comm_command.png"></img><br>
+
+Overapped genes between H0 and H12 gene lists  (suppress unique genes from 1 and 2)
+<pre class="prettyprint">
+
+$$ comm -12 H0_sorted.list H12_sorted.list | wc -l
+
+</pre>
+Genes unique to H0 (suppress unique genes from 2 and 3)
+<pre class="prettyprint">
+
+$$ comm -23 H0_sorted.list H12_sorted.list | wc -l
+
+</pre>
+Genes unique to H12 (suppress unique genes from 1 and 3)
+<pre class="prettyprint">
+
+$$ comm -13 H0_sorted.list H12_sorted.list | wc -l
+
+</pre>
+
+<mark><b>Question U5: I would like you to save the files from all the above commands as 'H0_H12_overlapped.list', 'H0_specific.list' and 'H12_specific.list'. Write your command ?</b></mark>
+
+<h3 id="piping"> Multiple/advanced piping</h3>
+
+<pre class="prettyprint">
+
+$$ cd annotation
+$$ nano hg38_gene_annotation_mart_export.txt
+
+</pre>
+
+Whenever you open a file or dataset, observe the structure of the dataset well. Now we are going to count number of genes, transcripts or isoforms in the annotation file. Also we are going to check how many protein coding genes are in the annotation.<br>
+
+<pre class="prettyprint">
+
+$$ cat hg38_gene_annotation_mart_export.txt | grep -v "^#" | cut -f1 | sort | uniq | wc -l
+$$ cat hg38_gene_annotation_mart_export.txt | grep -v "^#" | cut -f7 | sort | uniq | wc -l
+$$ cat hg38_gene_annotation_mart_export.txt | grep -v "^#" | grep -w "protein_coding" | cut -f1 | sort | uniq | wc -l
+
+</pre>
+
+<mark><b>Question U6: How many isoforms are there for gene 'TRAPPC4' ?</b></mark><br>
+<!--h1>cat hg38_gene_annotation_mart_export.txt | grep -v "^#" | grep -w "TRAPPC4" | cut -f7 | sort | uniq | wc -l # 12</h1-->
+<mark><b>Question U7: How many different Gene type (exampe, protein_coding, antisense etc.,) are there in the annotation file ?</b></mark>
+<!--h1>cat hg38_gene_annotation_mart_export.txt | grep -v "^#" | cut -f6 | sort | uniq | wc -l</h1-->
+
+      <h3 id="sed"> Stream editor used for replacing/inserting/deleting content of file</h3>
+<!--h1>zcat Homo_sapiens.GRCh38.87.gtf.gz | awk 'BEGIN{FS="\t"}{split($9,a,";"); if($3~"gene") print a[1]"\t"a[3]"\tchr"$1":"$4"-"$5"\t"a[5]"\t"$7"\t"$5-$4}' | sed 's/gene_id "//' | sed 's/gene_biotype "//'| sed 's/gene_name "//' | sed 's/"//g' | sed '1i\Geneid\tGeneSymbol\tChromosome\tClass\tStrand\tLength' | sed 's/ //g' | head<-->
+'Sed' command comes in border/bridge between basic and advanced unix commands. This command has lot of functionality. We are going to learn only limited functionality in this course (this is enough for manupulating the RNAseq data).<br>
+
+<b>Tidy Table A:</b>
+<pre class="prettyprint">
+
+gene_id "ENSG00000223972"	 gene_name "DDX11L1"	chr1:11869-14409	 gene_biotype "transcribed_unprocessed_pseudogene"	+	2540
+gene_id "ENSG00000227232"	 gene_name "WASH7P"	chr1:14404-29570	 gene_biotype "unprocessed_pseudogene"	-	15166
+gene_id "ENSG00000278267"	 gene_name "MIR6859-1"	chr1:17369-17436	 gene_biotype "miRNA"	-	67
+gene_id "ENSG00000243485"	 gene_name "MIR1302-2"	chr1:29554-31109	 gene_biotype "lincRNA"	+	1555
+gene_id "ENSG00000237613"	 gene_name "FAM138A"	chr1:34554-36081	 gene_biotype "lincRNA"	-	1527
+gene_id "ENSG00000268020"	 gene_name "OR4G4P"	chr1:52473-53312	 gene_biotype "unprocessed_pseudogene"	+	839
+gene_id "ENSG00000240361"	 gene_name "OR4G11P"	chr1:62948-63887	 gene_biotype "unprocessed_pseudogene"	+	939
+gene_id "ENSG00000186092"	 gene_name "OR4F5"	chr1:69091-70008	 gene_biotype "protein_coding"	+	917
+gene_id "ENSG00000238009"	 gene_name "RP11-34P13.7"	chr1:89295-133723	 gene_biotype "lincRNA"	-	44428
+gene_id "ENSG00000239945"	 gene_name "RP11-34P13.8"	chr1:89551-91105	 gene_biotype "lincRNA"	-	1554
+
+</pre>
+
+<b>Pretty Table B:</b>
+<pre class="prettyprint">
+
+Geneid	GeneSymbol	Chromosome	Class	Strand	Length
+ENSG00000223972	DDX11L1	chr1:11869-14409	transcribed_unprocessed_pseudogene	+	2540
+ENSG00000227232	WASH7P	chr1:14404-29570	unprocessed_pseudogene	-	15166
+ENSG00000278267	MIR6859-1	chr1:17369-17436	miRNA	-	67
+ENSG00000243485	MIR1302-2	chr1:29554-31109	lincRNA	+	1555
+ENSG00000237613	FAM138A	chr1:34554-36081	lincRNA	-	1527
+ENSG00000268020	OR4G4P	chr1:52473-53312	unprocessed_pseudogene	+	839
+ENSG00000240361	OR4G11P	chr1:62948-63887	unprocessed_pseudogene	+	939
+ENSG00000186092	OR4F5	chr1:69091-70008	protein_coding	+	917
+ENSG00000238009	RP11-34P13.7	chr1:89295-133723	lincRNA	-	44428
+
+</pre>
+
+<pre class="prettyprint">
+
+$$ zcat Homo_sapiens.GRCh38.87_badStructure.table.gz | sed 's/gene_id "//' | sed 's/gene_biotype "//'| sed 's/gene_name "//' | sed 's/"//g' | sed '1i\Geneid\tGeneSymbol\tChromosome\tClass\tStrand\tLength' | sed 's/ //g' | head
+
+</pre>
+
+Please save the pretty <b>Table B</b> with file name '<b>Homo_sapiens.GRCh38.87_annotation.table</b>'. To become master in sed follow this <a href="https://www.gnu.org/software/sed/manual/sed.html" target="new">documentation</a>. Minimum knowledge about 'sed' (replacing, deleting, printing, inserting) is enough to deal with RNA-seq data analysis.
+
+For printing specific range of lines from the file.
+
+<pre class="prettyprint">
+
+$$ sed -n 1,2p Homo_sapiens.GRCh38.87_annotation.table
+$$ sed -n 4,6p Homo_sapiens.GRCh38.87_annotation.table
+
+</pre>
+
+For deleting lines 
+
+<pre class="prettyprint">
+
+$$ cat Homo_sapiens.GRCh38.87_annotation.table | sed '1d' | head
+
+</pre>
+
+<mark><b>Question U8: Report the difference when you use "sed '1d' Homo_sapiens.GRCh38.87_annotation.table" and "sed -i '1d' Homo_sapiens.GRCh38.87_annotation.table" ?</b></mark>
+
+      <h3 id="tr"> Translate or replace content of file</h3>
+Translate 'tr' command is a simple utility and not used extensively. Since there are better alternatives like 'sed', this command is less used. Only advantage of using 'tr' over other commands is when you want to translate a text from Lowe case to upper case or vice versa. Please practice 'tr' command from following <a href="http://www.thegeekstuff.com/2012/12/linux-tr-command" target="new">link</a>.<br>
+
+<b>Sample usage</b>:
+
+<pre class="prettyprint">
+
+$$ echo "santhilal" | tr a-z A-Z
+
+</pre>
+
+      <h3 id="join"> Merge two files with specified column</h3>
+You will find some list of genes which are differentially expressed in some experiment or analysis. We are going to annotate or add more information to those gene list using our file 'Homo_sapiens.GRCh38.87_annotation.table' which contains gene level annotation.<br>
+
+<b>Two step process:</b> (Some times this will not work on Windows Bash)
+
+<pre class="prettyprint">
+
+$$ sort -k1 annotation/Homo_sapiens.GRCh38.87_annotation.table > annotation/Homo_sapiens.GRCh38.87_annotation_sorted.table
+
+$$ sort -k1 DEG_results/DiffExpressed_gene.list > DEG_results/DiffExpressed_gene_sorted.list
+
+$$ join annotation/Homo_sapiens.GRCh38.87_annotation_sorted.table DEG_results/DiffExpressed_gene_sorted.list -t $'\t' > DEG_results/DiffExpressed_gene.list.annotated
+
+</pre>
+
+<b>One step process:</b>
+
+<pre class="prettyprint">
+
+$$ join <(sort annotation/Homo_sapiens.GRCh38.87_annotation.table) <(sort DEG_results/DiffExpressed_gene.list) -t $'\t' > DEG_results/DiffExpressed_gene.list.annotated
+
+</pre>
+
+<b>Insert the column header:</b>
+
+<pre class="prettyprint">
+
+$$ sed -i '1i\Geneid\tGeneSymbol\tChromosome\tClass\tStrand\tLength' DEG_results/DiffExpressed_gene.list.annotated
+
+</pre>
+
+
+<hr></hr>
+      <h2> Advanced UNIX</h2>
+
+<h3 id="AWK"> AWK</h3>
+
+AWK is a different programming language developed by three programmers. It is mainly created to manipulate text files. In this course we will learn limitted functionality of AWK.<br><br>
+
+<b>Changing the order of columns in a table</b>:
+
+In this example we are going to change the order of columns from file 'DEG_results/DiffExpressed_gene.list.annotated' to 'Geneid\tGeneSymbol\tClass\tStrand\tChromosome\tLength'.
+
+<pre class="prettyprint">
+
+$$ cat DEG_results/DiffExpressed_gene.list.annotated | head
+
+$$ cat DEG_results/DiffExpressed_gene.list.annotated | awk 'BEGIN{FS="\t"}{print $1"\t"$2"\t"$4"\t"$5"\t"$3"\t"$6}' | head
+
+$$ cat DEG_results/DiffExpressed_gene.list.annotated | awk 'BEGIN{FS="\t"}{print $1"\t"$2"\t"$4"\t"$5"\t"$3"\t"$6}' > DEG_results/DiffExpressed_gene.list.annotated.ordered
+
+</pre>
+
+<b>Using if-condition, single condition:</b>:
+
+Get the genes with length less than 200 nucleotides.<br>
+
+<pre class="prettyprint">
+
+$$ cat DEG_results/DiffExpressed_gene.list.annotated.ordered | awk 'BEGIN{FS="\t"}{if($6<201) print $0;}'
+
+</pre>
+
+<mark><b>Question U9: How many differentially expressed genes has length less than 200 nts ?</b></mark><br>
+
+<b>Using if-condition, multiple condition</b>:
+
+Get only DE protein coding and lincRNAs.
+
+<pre class="prettyprint">
+
+$$ cat DEG_results/DiffExpressed_gene.list.annotated.ordered | awk 'BEGIN{FS="\t"}{if($3~"protein_coding" || $3~"lincRNA") print $0;}'
+
+</pre>
+
+<a href="https://www.gnu.org/software/gawk/manual/html_node/Comparison-Operators.html" target="new">Check more operators here.</a><br>
+
+<mark><b>Question U10: How do you get genes with length ranges from 100 to 150 nts ? How many genes could you find ?</b></mark>
+<!--ans>$$ cat DEG_results/DiffExpressed_gene.list.annotated.ordered | awk 'BEGIN{FS="\t"}{if($6<150 && $6>100 ) print $0;}'</ans-->
+
+
+<h3 id="assignment1"> Main Assignment 1 </h3> I would like you to use the complete annotation table file from 'annotation/Homo_sapiens.GRCh38.87_annotation.table' and convert it to a BED format using the commands from your previos lessons.<br>
+
+
+<br>
+
+<b>Your table format: TABLE</b><br>
+
+<pre class="prettyprint">
+
+Geneid	GeneSymbol	Chromosome	Class	Strand	Length
+ENSG00000223972	DDX11L1	chr1:11869-14409	transcribed_unprocessed_pseudogene	+	2540
+ENSG00000227232	WASH7P	chr1:14404-29570	unprocessed_pseudogene	-	15166
+ENSG00000278267	MIR6859-1	chr1:17369-17436	miRNA	-	67
+ENSG00000243485	MIR1302-2	chr1:29554-31109	lincRNA	+	1555
+ENSG00000237613	FAM138A	chr1:34554-36081	lincRNA	-	1527
+ENSG00000268020	OR4G4P	chr1:52473-53312	unprocessed_pseudogene	+	839
+ENSG00000240361	OR4G11P	chr1:62948-63887	unprocessed_pseudogene	+	939
+ENSG00000186092	OR4F5	chr1:69091-70008	protein_coding	+	917
+ENSG00000238009	RP11-34P13.7	chr1:89295-133723	lincRNA	-	44428
+
+</pre>
+
+<b>Desired output or file: BED</b>
+
+Learn more about BED file format from this <a href="https://genome.ucsc.edu/FAQ/FAQformat#format1" target="new">link</a>.<br>
+
+<pre class="prettyprint">
+
+track name="ensembl_hg38_annotation"
+chr1	11869	14409	ENSG00000223972:DDX11L1	0	+
+chr1	14404	29570	ENSG00000227232:WASH7P	0	-
+chr1	17369	17436	ENSG00000278267:MIR6859-1	0	-
+chr1	29554	31109	ENSG00000243485:MIR1302-2	0	+
+chr1	34554	36081	ENSG00000237613:FAM138A	0	-
+chr1	52473	53312	ENSG00000268020:OR4G4P	0	+
+chr1	62948	63887	ENSG00000240361:OR4G11P	0	+
+chr1	69091	70008	ENSG00000186092:OR4F5	0	+
+chr1	89295	133723	ENSG00000238009:RP11-34P13.7	0	-
+
+</pre>
+<br>
+<b>Tip: Make use of grep, awk and sed.</b>
+
+<a href="assignments/MainAssignments2and3.pdf"><h3 id="assignment1"> Main Assignment 2&3 </h3></a>
+
+
+<!--ans>cat annotation/Homo_sapiens.GRCh38.87_annotation.table | grep -v "^Geneid" | awk 'BEGIN{FS="\t"}{print $3"\t"$1":"$2"\t0\t"$5; }' | sed 's/:/\t/' | sed 's/-/\t/' | sed '1itrack name="ensembl_hg38_annotation"' </ans-->
+
+<hr></hr>
+
+<div style="float:right"><a href="R_tutorial.html">Next: R tutorial >></a></div><br>		
+
+      
+
+    </div>
+  </div>
+</section>
+<section class="vibrant centered">
+  <div class="">
+    <h4> This documentation was prepared by Santhilal Subhash. If it was useful, please write a recommendation on my <a href="https://www.linkedin.com/in/santhilal-subhash-56b97237/" target="_blank">Linkedin profile</a>. Enjoy! :)</h4>
+  </div>
+</section>
+<footer>
+  <div class="">
+    <p> &copy; Copyright Santhilal Subhash. All Rights Reserved.</p>
+  </div>
+</footer>
+</div>
+<script src="js/jquery.min.js"></script> 
+<script type="text/javascript" src="js/prettify/prettify.js"></script> 
+<script src="https://google-code-prettify.googlecode.com/svn/loader/run_prettify.js?lang=css&skin=sunburst"></script>
+<script src="js/layout.js"></script>
+</body>
+</html>

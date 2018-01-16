@@ -1,0 +1,591 @@
+<html>
+<head>
+<!--meta charset="utf-8">
+<meta name="description" content="">
+<meta name="HandheldFriendly" content="True">
+<meta name="MobileOptimized" content="320">
+<meta name="viewport" content="initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no"-->
+<title>Bioinformatics Tutorials by Santhilal :: RNA-seq</title>
+<!--link rel="alternate" type="application/rss+xml" title="frittt.com" href="feed/index.html">
+<link href="http://fonts.googleapis.com/css?family=Raleway:700,300" rel="stylesheet"
+        type="text/css"-->
+<link rel="stylesheet" href="css/style.css">
+<link rel="stylesheet" href="css/prettify.css">
+</head>
+<body>
+<div class="wrapper">
+<nav>
+ 
+  	<div class="pull-left">
+    	<h1><a href="javascript:"><img src="img/icon.png" alt="Free Documentation Template Icon" /> <span>DocWeb</span></a></h1>
+    </div>
+    
+    <div class="pull-right">
+    	<a href="https://www.biostars.org/u/12958/" target="_blank" class="btn btn-download"><img src="img/download.png" width="25" alt="Santhilal Subhash" /> MyBlog</a>
+    </div>
+
+</nav>
+<header>
+  <div class="container">
+    <h2 class="lone-header">Bioinformatics Tutorials by Santhilal :: RNA-seq</h2>
+  </div>
+</header>
+<section>
+  <div class="container">
+    <ul class="docs-nav">
+      <li><strong>RNA-seq analysis pipeline</strong></li>
+	<li><a href="#intro-rnaseq" class="cc-active">Introduction to RNA-seq</a></li>
+	<li><a href="#tool-install" class="cc-active">Installation of tools</a></li>
+	<li><a href="#prepare-annot" class="cc-active">Preparing annotations</a></li>
+	<li><a href="#data-format" class="cc-active">Introduction to formats</a></li>
+	<li><a href="#downloadStudy" class="cc-active">Downloading RAW data</a></li>
+	<li><a href="#RAWqual" class="cc-active">Sample quality</a></li>
+	<li><a href="#Adapter" class="cc-active">Cleaning reads</a></li>
+	<li><a href="#Alignment" class="cc-active">Alignment</a></li>
+	<li><a href="#AlignQual" class="cc-active">Alignment quality</a></li>
+	<li><a href="#quantify" class="cc-active">Gene quantification</a></li>
+<li class="separator"></li>
+      <li><strong>Using R</strong></li>
+	<li><a href="#DE" class="cc-active">Differential expression</a></li>
+	<li><a href="#prepareDE" class="cc-active">Prepare Files for DE analysis</a></li>
+	<li><a href="#edgeR" class="cc-active">edgeR analysis</a></li>
+	<li><a href="#DEannot" class="cc-active">Annotate genes</a></li>
+	<li><a href="#DEsave" class="cc-active">Saving the results</a></li>
+	<li><a href="#DEfilt" class="cc-active">Top candidates</a></li>
+	<li><a href="#DEstats" class="cc-active">DE summary</a></li>
+<li class="separator"></li>
+      <li><strong>Other analysis</strong></li>
+	<li><a href="#Enrichment" class="cc-active">Enriched pathways</a></li>
+
+
+    </ul>
+    <div class="docs-content">
+
+<div style="float:left"><a href="R_tutorial.html"><< Previous: R tutorial</div><div style="float:right"><a href="index.html">Home</a></div><br>
+
+<hr></hr>
+
+      <!--h2> RNA sequencing analysis</h2-->
+      
+	<h3 id="intro-rnaseq"> Introduction to RNA sequencing</h3>
+This session is a lecture. Lecture slides will be sent to the participants via email after the seminar.<br>
+<h4>Tip for this tutorial</h4> Before finishing one step do not look at next step to avoid confusion. <br>
+	<h3 id="tool-install"> <font color="#FA5858">RNA sequencing tools</font></h3>
+
+Transcriptome is most implemented and analysed technique after microarray and whole genome sequencing. Therefore there are plenty of tools available to perform the analysis. The ideal way of choosing the right tools is by reading the articles on benchmarking tools for specific task of RNA-seq analysis. <b>Tip:</b> Always choose core bioinformatics journal to look for benchmarking article or any top journals which publish bioinformatics methods and protocols. <br>
+
+Here is an example for recent benchmarking article for RNA-seq aligners, <br>
+
+"<a href="http://www.nature.com/nmeth/journal/v14/n2/full/nmeth.4106.html" target="new">Simulation-based comprehensive benchmarking of RNA-seq aligners</a>"<br>
+
+<mark><b>Question RS1: If you are given to choose between HISAT2 and STAR aligner, which one is your choice (based on the above article) ?
+Tip: Read the article, there is no need to understand the figures.
+  </b></mark>
+
+<br>
+If you are too busy for searching article and reading, you can have a alternate option to ask bioinformaticians from the forums and blogs like, <a href="https://www.biostars.org/" target="new">Biostars</a>, <a href="http://seqanswers.com/" target="new">seqanswers</a>, <a href="http://bioinformaticsonline.com/" target="new">BOL</a> etc,. Biostars is the best one to get immediate reply.
+
+<i><h3>Installing tools:</h3></i>
+
+Recent days most of the tools developed does not require any special installation procedures. It is just simple as, <br>
+1. Download<br>
+2. Extract/unzip/uncompress<br>
+3. Use the tool<br>
+
+For installing 'programs' I am creating '<b>bin</b>' in home directory as I explained during lecture '<strong>/home/santhilal/bin</strong>'. Sorry I forgot to mention during lecture. Always good to have a common folder were you download and keep the tools or programs. In this tutorial we calll it as '<strong>bin</strong>' in your home directory, which is to store all programs/tool you use for analysis.
+
+<pre class="prettyprint">
+
+$$ cd /home/santhilal/bin/
+$$ wget http://www.bioinformatics.babraham.ac.uk/projects/fastqc/fastqc_v0.11.5.zip
+$$ unzip fastqc_v0.11.5.zip
+
+</pre>
+<pre class="prettyprint">
+
+$$ cd /home/santhilal/bin/
+$$ wget ftp://ftp.ccb.jhu.edu/pub/infphilo/hisat2/downloads/hisat2-2.0.5-Linux_x86_64.zip
+$$ unzip hisat2-2.0.5-Linux_x86_64.zip
+
+</pre>
+<pre class="prettyprint">
+
+$$ cd /home/santhilal/bin/
+$$ wget https://superb-dca2.dl.sourceforge.net/project/samstat/samstat-1.5.1.tar.gz
+$$ tar -zxvf samstat-1.5.1.tar.gz
+
+</pre>
+<pre class="prettyprint">
+
+$$ cd /home/santhilal/bin/
+$$ wget https://excellmedia.dl.sourceforge.net/project/subread/subread-1.5.1/subread-1.5.1-Linux-x86_64.tar.gz
+$$ tar -zxvf subread-1.5.1-Linux-x86_64.tar.gz
+
+</pre>
+
+
+	<h3 id="prepare-annot"> Preparing/organizing directories and annotation files for the analysis</h3>
+
+<i><h3>Preparing directories:</h3></i>
+Always remember the most important step in bioinformatics analysis is to organize your folders well before designing your pipeline and starting your analysis. Please create the directories (folders) and sub-directories as shown in the following diagram. Example: I am creating the below directory structure in '<b>/data1/santhilal/</b>'. The 'programs' directory refers to the '<b>bin</b>' directory we created in home '<b>/home/santhilal/bin</b>'.
+<img src="img/dir_structure.png"></img><br>
+
+
+<i><h3><font color="#FA5858">Prepare the annotation files for your organism:</font></h3></i>
+
+In this step we are going to prepare the reference genome and reference transcript annotation. Reference genome is used for aligning the raw reads from sequencing.<br>
+
+<mark><b>Question RS2: What is the purpose of reference transcript annotation ? Tip: Read the slides from the lecture.
+  </b></mark> <br>
+
+<b>Genome annotation (FASTA)</b>:<br>
+
+
+<b>Example for FASTA format</b>: Usually the extension of the file names may end with '.fasta' or '.fa'. The below mentioned sequence represents FASTA formatted data containing part of the sequence from <b>Chromosome 1</b>.
+
+<pre class="prettyprint">
+>chr1
+CTGATGGTATGTACCTTTAATATAATTTGGTGAGAATGGTACTTCACCTC
+TGTGGTCTTCCTCCCCAAAACCCATAACCCCAGTCAAACCCTAAGAAAAA
+CATCAGCCAAACTCAAATTTAGGGCATTCTGCAAAAATAACTGACTGACT
+AGTACTCCCTCAAACTGTCAGGGTCACCAAAAACAAGGAAAGTCTAAGAA
+ACTCACAGCCAAGAGGTACCTAAAATGACAAATAAATTCAATGTGGTGGC
+CCGGATGGGATCCTGGAACAAAGAAAAAGAATGTTAGCTAAAAACTAAGG
+AAATCTAAATAAATGTATAGGCTTTAGTTAATAATACTCTATTGAATATT
+CATTAGTTGTGACAAATATGAGAGGTTAGTAATAGGAAAAAAATGGGAAC
+TCTGTGTATCTTTGAAATTTTTCTGTATATCTGAACTATTCTAAAATTTT
+AGTACCACTAAAGGTTTTTATTACATAATAGTGTTTTAATTTAATCTCCA
+TGCTATTTAATGAAATTTACCAGTTGTATTTGTGTTTGATTAGACATTAT
+CTCAAGTTGATTGGAATTACTCATATTTCTTAATGCCATTGTTGCAGCTG
+TAATAAGGTTGACTTTTCTACAATAGACACAGAAATCATTACATCACCAT
+TTAATTTTTGAAAAATAATCCGATCCCCTGTGATTATAAACTTGAGATTC
+TTTAAGAAAGTAGAAAGGTTGTAAGATATTATGAGTCATAGGATATTTCC
+AGTTTTGAAGTAATAAGACAAAAATCATTAACTAAACAAATTGGCATTAA
+AAAAAAACAGTATTTTTGAGAGGACCAGTCCAGACAATGTGTCTGTAAGA
+TAGACTTTACAAACTTAGTTTGATTAATTTTTGTTTTTCCGAGGATATGA
+TTCTTTTCTATAATTACTGTTCTGTTTTTTTCTGACAGGCTATCAAATAT
+TGGCTGCCTTAAGCTCTCTGTGAACTGAGTTATTCTCAATAATACTCTGT
+</pre>
+
+1) Download the recent version of genome file for Homo sapiens from Ensembl database in directory '<b>genome/Chromosomes</b>'. Navigate to the directory and then type this command.
+<pre class="prettyprint">
+
+$$ cd /data1/santhilal/rnaseq_analysis/genome/Chromosomes
+$$ wget ftp://ftp.ensembl.org/pub/release-87/fasta/homo_sapiens/dna/Homo_sapiens.GRCh38.dna.primary_assembly.fa.gz
+
+</pre>
+<mark>Note: File downloaded/link obtained from source '<a href="http://www.ensembl.org/info/data/ftp/index.html" target="new">http://www.ensembl.org/info/data/ftp/index.html'</a></mark><br><br>
+<!--After finished downloading, if incase you notice the command created many folders and sub-folders (because of folders on server) and kept all the FASTA files (file names, '<b>Homo_sapiens.GRCh38.dna.chromosome.{CHR_NUMBER}.fa.gz</b>') in some folder. Your job is to move all those FASTA files to your '<b>/data1/santhilal/rnaseq_analysis/genome/Chromosomes</b>' directory. Please always list the files from the directory when your are done with moving. If everything went well, you will find the following files in the directory '<b>/data1/santhilal/rnaseq_analysis/genome/Chromosomes</b>',><br>
+<pre class="prettyprint">
+	
+/data1/santhilal/rnaseq_analysis/genome/Chromosomes/Homo_sapiens.GRCh38.dna.primary_assembly.fa
+
+</pre-->
+2) After downloading your files please decompress the '.fa.gz' files using (please make sure you are in directory '<b>/data1/santhilal/rnaseq_analysis/genome/Chromosomes</b>' and list the files after decompressing),
+<pre class="prettyprint">
+
+$$ gunzip -d Homo_sapiens.GRCh38.dna.primary_assembly.fa.gz
+
+</pre>
+
+<b>Transcript annotation</b>:<br>
+In this practical session we will be using transcript annotation from ensembl database. Download the GTF (Gene Transfer Format) file in directory '<b>/data1/santhilal/rnaseq_analysis/annotation</b>' and decompress it.
+<pre class="prettyprint">
+
+$$ wget ftp://ftp.ensembl.org/pub/release-87/gtf/homo_sapiens/Homo_sapiens.GRCh38.87.gtf.gz
+
+</pre>
+<mark>Note: File downloaded/link obtained from source '<a href="http://www.ensembl.org/info/data/ftp/index.html" target="new">http://www.ensembl.org/info/data/ftp/index.html'</a></mark><br><br>
+	<h3 id="data-format"> RAW data and sequencing file formats</h3>
+Keep in mind, it is always good to use compressed file before start your analysis to save some space on server or local (uncompressed file is 10-fold larger than compressed one). The sequencing platform usually provide RAW data in FASTQ format either compressed or un compressed. The uncompressed file will have extension on '.fastq' or '.fq' and compressed file will have '.fastq.gz' or '.fq.gz'. If you are getting uncompressed file, always good to compress it using following command (all RNA-seq aligners supports compressed form as input),
+<pre class="prettyprint">
+$$ gzip sample.fastq
+</pre>
+The above command will generate a compressed file 'sample.fastq.gz'. In this tutorial I will provide you with already compressed file. To view fastq file you can use '<b>cat</b>' and for compressed fastq use '<b>zcat</b>' (remember to display only <b>head</b>).
+<br>
+<b>Example for FASTQ format</b>:
+<pre class="prettyprint">
+@SRR1958169.1 HISEQ:269:HAMADADXX:1:1101:1168:1870 length=51
+NGCGTGGAAGGGGTGGAGCCGCACCCGGATATGGAAGCCATCTTTGCCACA
++SRR1958169.1 HISEQ:269:HAMADADXX:1:1101:1168:1870 length=51
+#1=DDFFFHHHHHFHIIJJJJJJJJJJJJJJJJIJJJJJJHHHHHHFFFFF
+@SRR1958169.2 HISEQ:269:HAMADADXX:1:1101:1295:1887 length=51
+NTAGGGTGAGCCCCACATCGGCCTGTGTATATCCCAGGGTGATCCTCTTCT
++SRR1958169.2 HISEQ:269:HAMADADXX:1:1101:1295:1887 length=51
+#1=DDDDDHHHHHIIIIIIDDGHGE9?:?DGDFHDD&lt;BDH;FFHGGGIIIH
+</pre>
+
+	<h3 id="downloadStudy"><font color="#FA5858">Downloading RAW dataset from GEO repository</font></h3>
+
+<!--p> Dataset will be used from published study <a href="https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE44875" target="new">GSE44875</a>. Steps to be followed to download the RAW sequencing file from the GEO repository.</p-->
+
+<p>Dataset will be used from published study "<b><a href="http://www.cell.com/article/S2211-1247(15)00261-2/abstract" target="new">The lncRNA DEANR1 Facilitates Human Endoderm Differentiation by Activating FOXA2 Expression</a></b>". Steps to be followed to download the RAW sequencing file from the GEO repository.<br><br>
+
+1) Go to <a href="https://www.ncbi.nlm.nih.gov/geo/" target="new">https://www.ncbi.nlm.nih.gov/geo/</a>. In the search box paste the GSE accession id/number you found from the article (Tip: You can easily find GEO id in PDF of the article).<br>
+2) Note down and copy the PRJNAxxx (project id) and get information about the samples from <a href="http://www.ebi.ac.uk/ena" target="new">http://www.ebi.ac.uk/ena</a><br>
+3) In the 'Select Columns' section select (check the box) '<b>Experiment title and Sample title</b>'.<br>
+4) You will find 'WT', 'FOXA2KD' and 'DEANR1KD' samples (2 replicate each = 6 samples) along with other samples from the study.<br>
+5) Save the generated text file by clicking on the link 'Text'. Save it with name '<strong>PRJNA192215.txt</strong>'.<br>
+6) You will find the links in 'fastq_ftp' column of the text file. Download the samples corresponding to 'WT', 'FOXA2KD' and 'DEANR1KD' knockdown samples (6 samples).<br>
+7) Rename the files into simple names '<strong>WT_1.fastq.gz</strong>', '<strong>WT_2.fastq.gz</strong>', '<strong>DEANR1KD_1.fastq.gz</strong>', '<strong>DEANR1KD_2.fastq.gz</strong>', '<strong>FOXA2KD_1.fastq.gz</strong>' and '<strong>FOXA2KD_1.fastq.gz</strong>'.<br> <br> 
+
+
+Downloading: Below mentioned command will download the files from the path mentioned in the downloaded information file 'PRJNA192215.txt'. Since downloading will take long time, you can submit this job in background.<br><br>
+<b>Tip: (nohup/background processing)</b><br> 
+<pre class="prettyprint">
+
+$$ cd /data1/santhilal/rnaseq_analysis/fastq/
+$$ cat /data1/santhilal/rnaseq_analysis/fastq/PRJNA192215.txt | sed -n '3,8p' | cut -f12 | xargs wget # Print only 3rd to 8th row from the file 'PRJNA192215.txt' and cut column 12 containing download links
+
+
+</pre>
+
+Keep checking tail/last lines of 'nohup.out'. If it is still downloading you will see different line each time you 'tail' nohup.out. Orelse simple relay on 'top' command.
+
+</p>
+	<h3 id="RAWqual"> <font color="#FA5858">Checking sequence quality</font></h3>
+To check the quality of reads from the sequencing platform we will use 'FastQC' tool (popular). There are also plenty of other tools available for this purpose.
+
+<pre class="prettyprint">
+
+$$ nohup /home/santhilal/bin/FastQC/fastqc -o /data1/santhilal/rnaseq_analysis/QualityCheck/ -t 6 /data1/santhilal/rnaseq_analysis/fastq/*.fq.gz &
+
+
+</pre>
+
+Remember from the above command you are running all 6 jobs parellel. You can utilize 'top' command and 'nohup.out' file to check the status of submitted job (Refer lecture slides).<br>
+
+<a href="https://www.bioinformatics.babraham.ac.uk/projects/fastqc/good_sequence_short_fastqc.html" target="new">Example for Good Illuminal data</a><br>
+<a href="https://www.bioinformatics.babraham.ac.uk/projects/fastqc/bad_sequence_fastqc.html" target="new">Example for Bad Illuminal data</a><br><br>
+
+	<h3 id="Adapter"> Remove sequence adapters or cleaning reads</h3>
+	
+	Since the downloaded samples are already subjected to cleaning. We do not need this step. Most of the time the deposited sequences are free from adapters. Also sequencing facilities provide cleaned reads, in case you request. It is always better to request the sequening facility to clean the reads, so that we do not have to guess what kind of adapter sequence used by the facility.
+	
+	<h3 id="Alignment"> <font color="#FA5858">Aligning sequence to genome</font></h3>
+
+In this step we will be aligning our sequencing reads to the genome. For this purpose, we use alignment/assembly tool. There are tools specifically designed for RNA sequencing. Because RNA-seq reads needs special handling of splice sites while mapping to genome. Always before  starting the mapping, we need to index the genome according to the aligner's guideline. In this tutorial we are using HISAT2 aligner and it has its own indexing method. The first step here is to index the downloaded genome and next we are going to align using HISAT2.
+
+<strong><em>HISAT2 indexing</em></strong>:  
+
+For indexing the input is our downloaded genome file and output should be saved to appropriate indexing directory. Below job submission was assigned with 8 threads (you can choose based on the availability). there will be multiple files generated with the name 'hg38*' in the indexing folder ('<strong>HISAT2_index</strong>').
+
+<pre class="prettyprint">
+
+$$ cd /data1/santhilal/rnaseq_analysis/genome/HISAT2_index
+$$ nohup /home/santhilal/bin/hisat2-2.0.5/hisat2-build -p 8 /data1/santhilal/rnaseq_analysis/genome/Chromosomes/Homo_sapiens.GRCh38.dna.primary_assembly.fa /data1/santhilal/rnaseq_analysis/genome/HISAT2_index/hg38 &
+
+</pre>
+
+<strong><em>HISAT2 Alignment</em></strong>:
+
+Next step is alignment of downloaded fastq files to the indexed genome. Since we are going to submit more than one alignment jobs in the background. All the logs from the submitting jobs will be overwritten to the same file '/data1/santhilal/rnaseq_analysis/Alignment/nohup.out'. To avoid this, we are going to give unique 'nohup' name for each submission. For that we will be renaming the default 'nohup.out' to a name appropriate for the job. Every alignment program outputs alignment in SAM format.<br><br>
+
+<em>Sequence Alignment or Map format (SAM)</em>: The compressed or binary format of SAM files is called BAM (Binary Alignment or Map) format. Always remember to output the alignment in BAM format because SAM format takes 10 times of more storage space compared to BAM. The HISAT2 alignment always produce SAM file format as output. We need to parse/pipe to output from HISAT2 to samtools and instantly converting it to BAM without saving the SAM file.
+
+<pre class="prettyprint">
+
+$$ cd /data1/santhilal/rnaseq_analysis/Alignment
+$$ nohup /home/santhilal/bin/hisat2-2.0.5/hisat2 --phred33 -p 8 --qc-filter -x /data1/santhilal/rnaseq_analysis/genome/HISAT2_index/hg38 -U /data1/santhilal/rnaseq_analysis/fastq/DEANR1KD_1.fastq.gz -S /data1/santhilal/rnaseq_analysis/Alignment/DEANR1KD_1/DEANR1KD_1.sam | /home/santhilal/bin/samtools/samtools view -bS -o /data1/santhilal/rnaseq_analysis/Alignment/DEANR1KD_1/DEANR1KD_1.bam - &> nohupDEANR1KD_1_Alignment.out& 
+
+
+</pre>
+
+Similarly submit alignment jobs for other samples based on available CPUs/memory on the server.<br><br>
+
+<em>Example of SAM file format</em>:
+
+<pre class="prettyprint">
+SRR1958167.113755	256	10	27135	1	51M	*	0	0	TCATCACCAAATAGTGCTACCTAAAGTAATATACAACCAATTTAATAAGTT	CCCFFFFFHHHHHJHGIJJJJJJJJJHIJJJJJJJJJJJJJJJJJJJJJIJ	NH:i:3	HI:i:2	AS:i:50	nM:i:0
+SRR1958167.6172299	256	10	27763	1	51M	*	0	0	AGCTCAGCCATGGCCTTGGGTCTGAAGCACAGAGCTGTGTGGAGTCTGGGC	B@CFFFFFHHHHHJJJJJJJIJJJIJJJJJJHIIHIJJJIIIIJJJJJJJJ	NH:i:3	HI:i:2	AS:i:50	nM:i:0
+SRR1958167.16554448	256	10	28612	0	1S50M	*	0	0	GGCAGGAGAGACTGAGGTGATGAGGGTCCAGAGTGGACCCCCAGAAAACCA	CCCFFFFFHGHHHJIJJFHIIJJJIJIJJJJIJGIJJJIJJJIJIJIJJJJ	NH:i:5	HI:i:5	AS:i:49	nM:i:0
+SRR1958167.4929810	272	10	31436	0	51M	*	0	0	GATCACCTGAGGTGAGGAGTTTGAGACCAGCCTGACCAACATGGAGAAACC	HD999F;FDG?3IIGFHCIIIIIHHEHGHGECBEIIIIHGHHFEDDB=1@=	NH:i:7	HI:i:4	AS:i:50	nM:i:0
+SRR1958167.11547776	272	10	31436	0	51M	*	0	0	GATCACCTGAGGTGAGGAGTTTGAGACCAGCCTGACCAACATGGAGAAACC	JIIHHJJJJJJJJJIJJJJJJJJIIIJJJJIIJJIJJJHHHHGFFFFFBCC	NH:i:7	HI:i:4	AS:i:50	nM:i:0
+SRR1958167.23532591	272	10	31436	0	51M	*	0	0	GATCACCTGAGGTGAGGAGTTTGAGACCAGCCTGACCAACATGGAGAAACC	JJIIHJJJJJJJJJJJJJJJJJJJJIJJJJJJJJJJJJHHHHHFFFFDB@B	NH:i:7	HI:i:4	AS:i:50	nM:i:0
+SRR1958167.4156273	272	10	31546	0	51M	*	0	0	AGCTACTTGGGAGGCTGAGGCAGGAGAGTCACTTGAACCCGGGAGGCAGAG	IJGJJJJJJJIJJJJJJJJJJHJJIJJJJIIJJJJHGJHHHHHFFFFFCCC	NH:i:10	HI:i:2	AS:i:50	nM:i:0
+SRR1958167.19438259	16	10	31558	1	47M4S	*	0	0	GGCTGAGGCAGGAGAGTCACTTGAACCCGGGAGGCAGAGGTTGCGGTGGGC	HAEHGEGEGHGGCIIIEHFIJIIIJJIIIIJGGIHIJJHHHHHFFFDFCC@	NH:i:4	HI:i:3	AS:i:46	nM:i:0
+SRR1958167.6675573	272	10	39012	0	51M	*	0	0	AGACACAACCAAAAAAGAGAATTTTAGACCACTATCCTTGATGAACATTGG	DBGHEIHFJJJJJJIHEJJHGGHHHHGHIIJJIJJJGIFHDHHFFDDB@@@	NH:i:10	HI:i:2	AS:i:48	nM:i:1
+SRR1958167.6855956	0	10	46995	3	1S50M	*	0	0	CGGCTGTCAGAACACAGTAAAGAATCCACACTGCTTCCCCCCTTTACCTAG	CCCFFFFFHHHHHJIJJIJJJJIJJJJJJJJIJIJJJJJJJJHIJHJJIJG	NH:i:2	HI:i:1	AS:i:49	nM:i:0
+</pre>
+Refer <a href="http://samtools.github.io/hts-specs/SAMv1.pdf" target="new">SAM format manual</a> for complete description.
+
+
+
+	<h3 id="AlignQual"> Check alignment quality</h3>
+	
+To check the alignment quality we are going to use SAMstat.	
+	
+<pre class="prettyprint">
+
+$$ export PATH=$PATH:/home/santhilal/bin/samtools/samtools
+$$ /home/santhilal/bin/samstat-1.5.1/samstat /data1/santhilal/rnaseq_analysis/Alignment/DEANR1KD_1/DEANR1KD_1.bam
+	
+</pre>
+
+or you can run all the jobs in background.
+
+<pre class="prettyprint">
+
+$$ export PATH=$PATH:/home/santhilal/bin/samtools/samtools
+$$ cd /data1/santhilal/rnaseq_analysis/Alignment 
+$$ nohup /home/santhilal/bin/samstat-1.5.1/samstat /data1/santhilal/rnaseq_analysis/Alignment/*/*.bam &> nohupSAMstat.out& 
+	
+</pre>
+
+
+The above command will generate a HTML file '<strong>/data1/santhilal/rnaseq_analysis/Alignment/DEANR1KD_1/DEANR1KD_1.bam.html</strong>'. This file can be opened with any web browser. More information on SAMstat is <a href="http://samstat.sourceforge.net/" target="new">here</a>.
+
+
+
+	<h3 id="quantify"> <font color="#FA5858">Quantifying samples using transcript annotation</font></h3>
+	
+After aligning the samples and checking the alignment quality, we are going to quantify the aligned reads for our transcript annotation (GTF). Subread is a package provides read counting script called featureCounts. There are other popular tools like <a href="https://htseq.readthedocs.io/en/release_0.9.1/" target="new">HTSeq</a> tool for quantification. HTSeq is based on python and often prone to errors while installing because of python syntax keeps on changing between versions. Also there was question of reproducibility by using HTSeq. Although recent versions has solved this issue and HTSeq gives almost same output as featureCounts. Some problems faced by HTSeq users is 1) installation problems, 2) need to keep track of python versions, 3) job execution is lot slower than featureCounts, and 4) no support for parallel jobs/multiple threads. Subread featureCounts does not need installation, less error prone, can run parallel jobs and it is super-fast. <br>
+
+For quantification, we need to provide GTF files containing information about genes (by transcripts and exons) and our BAM files. This will outputa a table containing reads from individual samples gene-wise in the order we provide. <a href="http://bioinf.wehi.edu.au/featureCounts/" target="new">Examples/guideline</a>, running featureCounts.  	
+	
+<pre class="prettyprint">
+		
+$$ /home/santhilal/bin/subread-1.5.0-p1-source/bin/featureCounts -T 6 -t exon -g gene_id -Q 30 -F GTF -a /data1/santhilal/rnaseq_analysis/annotation/Homo_sapiens.GRCh38.87.gtf -o /data1/santhilal/rnaseq_analysis/quantification/hg38_ensembl_GRCh38.87_counts.txt /data1/santhilal/rnaseq_analysis/Alignment/WT_1/WT_1.bam /data1/santhilal/rnaseq_analysis/Alignment/WT_2/WT_2.bam /data1/santhilal/rnaseq_analysis/Alignment/DEANR1KD_1/DEANR1KD_1.bam /data1/santhilal/rnaseq_analysis/Alignment/DEANR1KD_2/DEANR1KD_2.bam /data1/santhilal/rnaseq_analysis/Alignment/FOXA2KD_1/FOXA2KD_1.bam /data1/santhilal/rnaseq_analysis/Alignment/FOXA2KD_2/FOXA2KD_2.bam
+
+</pre>
+	
+	
+	<h3 id="DE"> <font color="#FA5858">Differential Expression analysis</font></h3>
+	
+There are plenty of R Bioconductor tools available for differential expression (DE) analysis (eg., edgeR, DESeq2, DEGSeq, EBSeq etc.,). Here we are going to use classic DE tool <a href="http://bioconductor.org/packages/release/bioc/html/edgeR.html" target="new">edgeR</a>. 
+	
+
+
+	<h3 id="prepareDE"> Preparing files for DE</h3>
+
+
+	<em><strong>Prepare design matrix:</strong></em>
+
+Prepare a plain text file with,<br> 
+1) First column (samples) containing infromation about the column/samples names from the quantification file we generated using featureCounts.<br> 
+2) Next column (labels) in design matrix can be optional or just have some extra infromation.<br>
+3) Third column (condition) containing name of sample groups. Example, 'WT_1' and 'WT_2' we are going to use as one group called 'control'. This column is very important because you are going to tell edgeR that which samples belong to which group.<br>
+
+<pre class="prettyprint">
+		
+samples	labels	condition
+WT_1	control1	control
+WT_2	control2	control
+DEANR1KD_1	DEANR1KD1	DEANR1
+DEANR1KD_2	DEANR1KD2	DEANR1
+FOXA2KD_1	FOXA2KD1	FOXA2
+FOXA2KD_2	FOXA2KD2	FOXA2		
+		
+</pre>
+
+
+	<em><strong>Prepare quantification table:</strong></em>
+
+From the quantification table, we will have lot of information which will not be required in next steps. We have to remove those extra columns and just create a matrix with the required information.
+
+<pre class="prettyprint">
+	
+$$ cat /data1/santhilal/rnaseq_analysis/quantification/hg38_ensembl_GRCh38.87_counts.txt | grep -v "^#" | cut -f1,7,8,9,10,11,12 | sed '1d' | sed '1i\Geneid\tWT1_1\tWT1_2\tDEANR1KD_1\tDEANR1KD_2\tFOXA2KD_1\tFOXA2KD_2' > /data1/santhilal/rnaseq_analysis/quantification/hg38_ensembl_GRCh38.87_counts.matrix
+	
+</pre>
+
+	<em><strong>Prepare annotation table:</strong></em>
+
+
+Make a gene-wise table from downloaded GTF ('<strong>/data1/santhilal/rnaseq_analysis/annotation/Homo_sapiens.GRCh38.87.gtf</strong>') as explained in the <strong>Main assignment 2</strong> and save it to the directory '<strong>/data1/santhilal/rnaseq_analysis/annotation/</strong>' with name '<strong>Homo_sapiens.GRCh38.87_gene_annotation.txt</strong>'.<br><br>
+	
+	<h3 id="edgeR"> edgeR analysis</h3>
+	
+Now we are ready for performing differential expression analysis. To start with, we first need to start R session in your terminal and load edgeR package as shown below.
+<pre class="prettyprint">
+
+$$ R
+>> library("edgeR")
+
+</pre>
+
+Load your design matrix to a variable 'mydesign' and your quantification table in 'x' variable. Remember we prepared an annotation table using GTF, load that into 'dbs' variable. Final thing is specifying the path where your outputs from edgeR to be saved (in this case the 'outpath' will have path stored in the variable).
+
+<pre class="prettyprint">
+
+
+>> mydesign <- read.table("/data1/santhilal/rnaseq_analysis/DE/exp_design.txt", header=T, sep="\t")
+>> x <- read.table("./data1/santhilal/rnaseq_analysis/quantification/hg38_ensembl_GRCh38.87_counts.matrix", header=T, sep="\t", row.names=1)
+>> dbs <- read.table("/data1/santhilal/rnaseq_analysis/annotation/Homo_sapiens.GRCh38.87_gene_annotation.txt", header=T, sep="\t")
+>> outpath <- "/data1/santhilal/rnaseq_analysis/DE/"
+
+</pre>
+
+Check if the above variables are created properly by using 'ls()'. Next check the contents of the variables just by typing the variables names you created above (if the variable has huge data, do not print everything instead you can just print first ten entries using head).
+
+<pre class="prettyprint">
+
+>> ls()
+>> mydesign
+>> head(x)
+>> head(dbs)
+>> outpath
+
+</pre>
+
+Give information about the groups to edgeR along with loading the counts matrix.
+
+<pre class="prettyprint">
+
+>> group <- factor(mydesign$condition)
+>> d <- DGEList(counts=x, group=group)
+
+</pre>
+
+Normalizing reads to counts per million (CPM) and filtering the genes by keeping only the genes with CPM > 5 in atleast one sample (prominantly expressed in atleast one sample). We should be carefull in choosing this because if you are analyzing for non-coding RNAs, this value (cpm>5) is too high. Since our aim in this exercise is to get only top significantly expressed protein-coding genes, we are using more stringent criteria.
+
+<pre class="prettyprint">
+
+
+>> dim(d)
+>> keep <- rowSums(cpm(d)>5) >= 1
+>> d <- d[keep,]
+>> dim(d)
+>> d$samples$lib.size <- colSums(d$counts)
+
+</pre>
+
+
+Dispersion estimates between samples (even within group) and between groups. This estimate is important for edgeR to calculate the differential expression because it gives information about how close or how variable the samples or groups. Read more about dispersion on <strong>page 44</strong> of <a href="http://bioconductor.org/packages/release/bioc/vignettes/edgeR/inst/doc/edgeRUsersGuide.pdf" target="new">edgeR user guide</a>.
+
+<pre class="prettyprint">
+
+
+>> d <- calcNormFactors(d)
+>> d1 <- estimateCommonDisp(d, verbose=T)
+>> d1 <- estimateTagwiseDisp(d1)
+
+</pre>
+
+## Differential expression between WT and DEANR1
+
+<pre class="prettyprint">
+
+
+>> et <- exactTest(d1, pair=c("control","DEANR1")) # Testing for differential expression betwee groups
+>> res <- topTags(et, n=length(et)) # Extracting differentially expressed genes (if you just specify, topTags(et) will give you first ten DEGs)
+>> res$table[,"Geneid"] <- rownames(res$table) # making rownames of the results to be first column of the results with column name 'Geneid' (easy for saving) 
+>> colnames(res$table) # Checking the columns of results
+>> resF <- res$table[,c("Geneid","logFC","logCPM","PValue","FDR")]  # Storing selective columns to a variable 'resF'
+
+</pre>
+
+<h3 id="DEannot"> Annotating significant genes</h3>
+
+We are now ready to merge our 'dbs' with information from GTF and DE results. The resulting table will have all information about genes from GTF with staus of differential expression (statistics generated by edgeR).
+
+<pre class="prettyprint">
+
+>> annotated <- merge( dbs, resF, by='Geneid')
+
+</pre>
+
+
+<h3 id="DEsave"> Saving DE results</h3>
+
+
+
+Saving complete DE analysis without any filtering. Usually the DE analysis is filtered based on 'FDR' and 'logFC' cutoff.
+
+<pre class="prettyprint">
+
+
+>> write.table(annotated,paste0(outpath,"DEANR1/DEANR1_DEGs_annotated.txt"), sep="\t", quote=F,row.names=F)
+
+</pre>
+
+
+<h3 id="DEfilt"> Filtering significant gene list</h3>
+	
+
+Now we try to filter the differentially expressed genes using log2fold change >= 1 and FDR<=0.05. In case of log2fold change we also need to get negative fold change values (downregulated genes). To achieve this we are going to tell R to convert the values in column 'annotated$logFC' to absolute values (abs) and then filter the genes having >=1 absolute log2fold change. In this way you will get all up- and downregulated genes.<br>
+
+<strong>Note:</strong> In simple term absolute value means converting all values to positive, abs(-1)=1 and abs(+1)=1.
+
+# Filtered with log-fold change >=1 amd FDR < 0.05 (all classes of genes and transcripts)
+
+
+<pre class="prettyprint">
+
+
+>> annotated_filt <- subset(annotated,abs(annotated$logFC)>=1 & annotated$FDR<=0.01)
+>> write.table(annotated_filt,paste0(outpath,"DEANR1/DEANR1_DEGs_annotated_filtered_all.txt"), sep="\t", quote=F,row.names=F)
+
+</pre>
+
+
+# Filtered with log-fold change >=1 amd FDR < 0.05 (only protein coding)
+
+<pre class="prettyprint">
+
+
+>> annotated_filt_pc <- subset(annotated,abs(annotated$logFC)>=1 & annotated$FDR<=0.01 & annotated$Class=="protein_coding")
+>> write.table(annotated_filt_pc,paste0(outpath,"DEANR1/DEANR1_DEGs_annotated_filtered_PC.txt"), sep="\t", quote=F,row.names=F)
+
+</pre>
+	
+	
+	
+	<h3 id="DEstats"> Differential Expression summary</h3>
+
+<pre class="prettyprint">
+
+>> summary(annotated_filt$Class)
+
+</pre>
+
+<mark><b>Question RS3: Find differentially expressed protein coding genes between WT and FOXA2. Submit the complete edgeR code for this analysis.
+	
+  </b></mark> <br>
+<mark><b>Question RS4: How many protein coding genes are differentially expressed in DEANR1 and FOXA2 ? How many protein coding genes are common between them ? Do you get all the genes highlighted in <strong>Figure 5F</strong> from <a href="http://www.cell.com/cell-reports/fulltext/S2211-1247(15)00261-2" target="new">this study</a>?
+	
+  </b></mark> <br><br>
+  
+  <mark><b>Question RS5: Report the missing genes from <strong>Figure 5F</strong> and your analysis. Please also report the status of missing gene (atleast one) and why is it missing?</a>?
+	
+    </b></mark>
+
+	<h3 id="Enrichment"> Functional/pathway enrichment analysis</h3>
+	<a href="https://twitter.com/GeneSCF?ref_src=twsrc%5Etfw" class="twitter-follow-button" data-show-count="false">Follow @GeneSCF</a><script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script><br><strong>Vote on: </strong><a href="https://www.biostars.org/p/108669/" target="new"> <font size="5" color="#8A0829">Bio</font><font size="5" color="#0B6121">stars</font></b></a><br><br>
+	
+<mark><b>Question RS6: Perform geneontology (GO) biological processes (BP) enrichment analysis using GeneSCF tool for,<br>
+	1) Protein coding DEGs in DEANR1<br>
+	2) Protein coding DEGs in FOXA2<br>
+	3) Common protein coding genes between DEANR1 and FOXA2<br><br>
+	What are the top significantly GO_BP in all the above analysis? <br>
+	Tip: Main assignment 2 Part 1
+
+	
+  </b></mark> <br>
+
+<hr></hr>
+
+<div style="float:left"><a href="R_tutorial.html"><< Previous: R tutorial</div><div style="float:right"><a href="index.html">Home</a></div>
+
+
+    </div>
+  </div>
+</section>
+<section class="vibrant centered">
+  <div class="">
+    <h4> This documentation was prepared by Santhilal Subhash. If it was useful, please write a recommendation on my <a href="https://www.linkedin.com/in/santhilal-subhash-56b97237/" target="_blank">Linkedin profile</a>. Enjoy! :)</h4>
+  </div>
+</section>
+<footer>
+  <div class="">
+    <p> &copy; Copyright Santhilal Subhash. All Rights Reserved.</p>
+  </div>
+</footer>
+</div>
+<script src="js/jquery.min.js"></script> 
+<script type="text/javascript" src="js/prettify/prettify.js"></script> 
+<script src="https://google-code-prettify.googlecode.com/svn/loader/run_prettify.js?lang=css&skin=sunburst"></script>
+<script src="js/layout.js"></script>
+</body>
+</html>
+      <!--h2> RNA sequencing analysis</h2-->
