@@ -235,7 +235,7 @@ Downloading: Below mentioned command will download the files from the path menti
 <pre class="prettyprint">
 
 $$ cd /data1/santhilal/rnaseq_analysis/fastq/
-$$ nohup cat /data1/santhilal/rnaseq_analysis/fastq/PRJNA192215.txt | sed -n '3,8p' | cut -f2 | xargs wget &> download_nohup.out # Print only 3rd to 8th row from the file 'PRJNA192215.txt' and cut column 12 containing download links
+$$ nohup cat /data1/santhilal/rnaseq_analysis/fastq/PRJNA192215.txt | sed -n '3,8p' | cut -f2 | xargs wget &> download_nohup.out & # Print only 3rd to 8th row from the file 'PRJNA192215.txt' and cut column 12 containing download links
 
 
 </pre>
