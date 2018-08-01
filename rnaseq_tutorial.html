@@ -235,7 +235,7 @@ Downloading: Below mentioned command will download the files from the path menti
 <pre class="prettyprint">
 
 $$ cd /data1/santhilal/rnaseq_analysis/fastq/
-$$ cat /data1/santhilal/rnaseq_analysis/fastq/PRJNA192215.txt | sed -n '3,8p' | cut -f12 | xargs wget # Print only 3rd to 8th row from the file 'PRJNA192215.txt' and cut column 12 containing download links
+$$ nohup cat /data1/santhilal/rnaseq_analysis/fastq/PRJNA192215.txt | sed -n '3,8p' | cut -f12 | xargs wget &> download_nohup.out # Print only 3rd to 8th row from the file 'PRJNA192215.txt' and cut column 12 containing download links
 
 
 </pre>
@@ -396,11 +396,15 @@ Make a gene-wise table from downloaded GTF ('<strong>/data1/santhilal/rnaseq_ana
 	
 	<h3 id="edgeR"> edgeR analysis</h3>
 	
-Now we are ready for performing differential expression analysis. To start with, we first need to start R session in your terminal and load edgeR package as shown below.
+Now we are ready for performing differential expression analysis. To start with, we first need to start R session from your terminal and, install and load edgeR package as shown below. Since edgeR is an bioconductor package, we need to follow installation instructions from <a href="https://bioconductor.org/packages/release/bioc/html/edgeR.html" target="new">bioconductor repository</a>.
+
 <pre class="prettyprint">
 
 $$ R
->> library("edgeR")
+## try http:// if https:// URLs are not supported
+>> source("https://bioconductor.org/biocLite.R") # Connecting repository
+>> biocLite("edgeR") # Installing
+>> library("edgeR") # Loading installed edgeR libraries
 
 </pre>
 
