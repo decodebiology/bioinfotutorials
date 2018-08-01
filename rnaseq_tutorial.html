@@ -397,18 +397,24 @@ Make a gene-wise table from downloaded GTF ('<strong>/data1/santhilal/rnaseq_ana
 	<h3 id="edgeR"> edgeR analysis</h3>
 	
 Now we are ready for performing differential expression analysis. To start with, we first need to start R session from your terminal and, install and load edgeR package as shown below. Since edgeR is an bioconductor package, we need to follow installation instructions from <a href="https://bioconductor.org/packages/release/bioc/html/edgeR.html" target="new">bioconductor repository</a>.
+<br>
+<strong>Instruction</strong>: You need to just copy paste the command between '<<' and '#'. Example form the below command, the portion maked in red is the actual command you have to copy and paste it in your R terminal. The text after '#' is just description of the command for your understanding.
 
 <pre class="prettyprint">
 
 $$ R
 ## try http:// if https:// URLs are not supported
->> source("https://bioconductor.org/biocLite.R") # Connecting repository
+>> <mark>source("https://bioconductor.org/biocLite.R")</mark> # Connecting repository
 >> biocLite("edgeR") # Installing
 >> library("edgeR") # Loading installed edgeR libraries
 
 </pre>
 
-Load your design matrix to a variable 'mydesign' and your quantification table in 'x' variable. Remember we prepared an annotation table using GTF, load that into 'dbs' variable. Final thing is specifying the path where your outputs from edgeR to be saved (in this case the 'outpath' will have path stored in the variable).
+Load your design matrix to a variable 'mydesign' and your quantification table in 'x' variable. Remember we prepared an annotation table using GTF, load that into 'dbs' variable. Final thing is specifying the path where your outputs from edgeR to be saved (in this case the 'outpath' will have path stored in the variable). In the following commands, <br><br>
+
+- <mark>header=T</mark> means, header is TRUE and it takes first line from the file as header/table-header. Alternate representation is <mark>header=TRUE</mark>.<br>
+- <mark>sep="\t"</mark> means, in the file each columns are separated with TAB delimitation.<br>
+- <mark>row.names=1</mark> means, considering first column as rownames (Require to mention for edgeR analysis).<br><br>
 
 <pre class="prettyprint">
 
@@ -534,7 +540,7 @@ We are now ready to merge our 'dbs' with information from GTF and DE results. Th
 >> nc <- cpm(d1$counts, normalized.lib.sizes=FALSE) # Normalization
 >> nc <- cbind(rownames(nc),nc) # converting rownames ('Geneid') into first column of 'nc', it will be useful for annotation.
 >> colnames(nc)[1] <- "Geneid" # Naming the first column as 'Geneid'
->> nc_annotated <- merge( dbs, nc, by='Geneid') # Merging 'dbs' and 'nc' by column 'Geneid' 
+>> nc_annotated <- merge( dbs, nc, by='Geneid') # Merging 'dbs' and 'nc' by matching column 'Geneid' 
 >> write.table(nc_annotated,paste0(outpath,"normalized_cpm.txt"), sep="\t", quote=F,row.names=FALSE)
 
 </pre>
@@ -546,7 +552,7 @@ Now we try to filter the differentially expressed genes using log2fold change >=
 
 <strong>Note:</strong> In simple term absolute value means converting all values to positive, abs(-1)=1 and abs(+1)=1.
 
-# Filtered with log-fold change >=1 amd FDR < 0.05 (all classes of genes and transcripts)
+# Filtered with log-fold change >=1 and FDR < 0.05 (all classes of genes and transcripts)
 
 
 <pre class="prettyprint">
