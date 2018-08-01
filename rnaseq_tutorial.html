@@ -230,12 +230,12 @@ NTAGGGTGAGCCCCACATCGGCCTGTGTATATCCCAGGGTGATCCTCTTCT
 7) Rename the files into simple names '<strong>WT_1.fastq.gz</strong>', '<strong>WT_2.fastq.gz</strong>', '<strong>DEANR1KD_1.fastq.gz</strong>', '<strong>DEANR1KD_2.fastq.gz</strong>', '<strong>FOXA2KD_1.fastq.gz</strong>' and '<strong>FOXA2KD_1.fastq.gz</strong>'.<br> <br> 
 
 
-Downloading: Below mentioned command will download the files from the path mentioned in the downloaded information file 'PRJNA192215.txt'. Since downloading will take long time, you can submit this job in background.<br><br>
+Downloading: Below mentioned command will download the files from the path mentioned in the downloaded information file 'PRJNA192215.txt'. Since downloading will take long time, you can submit this job in background. In the following command I am redirecting normal nohup.out and saving into 'download_nohup.out'. If you do not want to rename you just use <mark>nohup YOUR_COMPLETE_COMMAND &</mark>. This will save your progress in default 'nohup.out'.<br><br>
 <b>Tip: (nohup/background processing)</b><br> 
 <pre class="prettyprint">
 
 $$ cd /data1/santhilal/rnaseq_analysis/fastq/
-$$ nohup cat /data1/santhilal/rnaseq_analysis/fastq/PRJNA192215.txt | sed -n '3,8p' | cut -f2 | xargs wget &> download_nohup.out & # Print only 3rd to 8th row from the file 'PRJNA192215.txt' and cut column 12 containing download links
+$$ nohup cat /data1/santhilal/rnaseq_analysis/fastq/PRJNA192215.txt | sed -n '3,8p' | cut -f2 | xargs wget > download_nohup.out 2>&1 & # Print only 3rd to 8th row from the file 'PRJNA192215.txt' and cut column 12 containing download links
 
 
 </pre>
@@ -286,7 +286,7 @@ Next step is alignment of downloaded fastq files to the indexed genome. Since we
 <pre class="prettyprint">
 
 $$ cd /data1/santhilal/rnaseq_analysis/Alignment
-$$ nohup /home/santhilal/bin/hisat2-2.0.5/hisat2 --phred33 -p 8 --qc-filter -x /data1/santhilal/rnaseq_analysis/genome/HISAT2_index/hg38 -U /data1/santhilal/rnaseq_analysis/fastq/DEANR1KD_1.fastq.gz -S /data1/santhilal/rnaseq_analysis/Alignment/DEANR1KD_1/DEANR1KD_1.sam | /home/santhilal/bin/samtools/samtools view -bS -o /data1/santhilal/rnaseq_analysis/Alignment/DEANR1KD_1/DEANR1KD_1.bam - &> nohupDEANR1KD_1_Alignment.out& 
+$$ nohup /home/santhilal/bin/hisat2-2.0.5/hisat2 --phred33 -p 8 --qc-filter -x /data1/santhilal/rnaseq_analysis/genome/HISAT2_index/hg38 -U /data1/santhilal/rnaseq_analysis/fastq/DEANR1KD_1.fastq.gz -S /data1/santhilal/rnaseq_analysis/Alignment/DEANR1KD_1/DEANR1KD_1.sam | /home/santhilal/bin/samtools/samtools view -bS -o /data1/santhilal/rnaseq_analysis/Alignment/DEANR1KD_1/DEANR1KD_1.bam - > nohupDEANR1KD_1_Alignment.out 2>&1
 
 
 </pre>
@@ -328,7 +328,7 @@ or you can run all the jobs in background.
 
 $$ export PATH=$PATH:/home/santhilal/bin/samtools/samtools
 $$ cd /data1/santhilal/rnaseq_analysis/Alignment 
-$$ nohup /home/santhilal/bin/samstat-1.5.1/samstat /data1/santhilal/rnaseq_analysis/Alignment/*/*.bam &> nohupSAMstat.out& 
+$$ nohup /home/santhilal/bin/samstat-1.5.1/samstat /data1/santhilal/rnaseq_analysis/Alignment/*/*.bam > nohupSAMstat.out 2>&1
 	
 </pre>
 
@@ -466,6 +466,26 @@ Dispersion estimates between samples (even within group) and between groups. Thi
 
 </pre>
 
+## Plotting correlation of samples with normalized counts
+
+<pre class="prettyprint">
+	
+>> png(paste0(outpath,"sample_correlation.png"))
+>> pheatmap(cor(log2(cpm(d)+1)), main="SampleCorrelation")
+>> dev.off()
+
+</pre>
+
+## Plotting library sizes of samples (Total number of sequenced reads assigned to all genes from the GTF file)
+
+<pre class="prettyprint">
+
+>> png(paste0(outpath,"sample_librarySizes.png"))
+>> barplot(d$samples$lib.size,las=2,names=colnames(d),cex.names=0.6,horiz=T,main="LibrarySizes")
+>> dev.off()
+
+</pre>
+
 ## Differential expression between WT and DEANR1
 
 <pre class="prettyprint">
@@ -494,7 +514,7 @@ We are now ready to merge our 'dbs' with information from GTF and DE results. Th
 
 
 
-Saving complete DE analysis without any filtering. Usually the DE analysis is filtered based on 'FDR' and 'logFC' cutoff.
+## Saving complete DE analysis without any filtering. Usually the DE analysis is filtered based on 'FDR' and 'logFC' cutoff.
 
 <pre class="prettyprint">
 
@@ -503,6 +523,21 @@ Saving complete DE analysis without any filtering. Usually the DE analysis is fi
 
 </pre>
 
+
+
+## Saving normalized read counts (counts per million) for all samples
+
+
+<pre class="prettyprint">
+	
+	
+>> nc <- cpm(d1$counts, normalized.lib.sizes=FALSE) # Normalization
+>> nc <- cbind(rownames(nc),nc) # converting rownames ('Geneid') into first column of 'nc', it will be useful for annotation.
+>> colnames(nc)[1] <- "Geneid" # Naming the first column as 'Geneid'
+>> nc_annotated <- merge( dbs, nc, by='Geneid') # Merging 'dbs' and 'nc' by column 'Geneid' 
+>> write.table(nc_annotated,paste0(outpath,"normalized_cpm.txt"), sep="\t", quote=F,row.names=FALSE)
+
+</pre>
 
 <h3 id="DEfilt"> Filtering significant gene list</h3>
 	
