@@ -284,10 +284,12 @@ Next step is alignment of downloaded fastq files to the indexed genome. Since we
 
 <em>Sequence Alignment or Map format (SAM)</em>: The compressed or binary format of SAM files is called BAM (Binary Alignment or Map) format. Always remember to output the alignment in BAM format because SAM format takes 10 times of more storage space compared to BAM. The HISAT2 alignment always produce SAM file format as output. We need to parse/pipe to output from HISAT2 to samtools and instantly converting it to BAM without saving the SAM file.
 
+<!-- $$ nohup /home/santhilal/bin/hisat2-2.0.5/hisat2 --phred33 -p 8 --qc-filter -x /data1/santhilal/rnaseq_analysis/genome/HISAT2_index/hg38 -U /data1/santhilal/rnaseq_analysis/fastq/DEANR1KD_1.fastq.gz -S /data1/santhilal/rnaseq_analysis/Alignment/DEANR1KD_1/DEANR1KD_1.sam | /home/santhilal/bin/samtools/samtools view -bS -o /data1/santhilal/rnaseq_analysis/Alignment/DEANR1KD_1/DEANR1KD_1.bam - > nohupDEANR1KD_1_Alignment.out 2>&1-->
+
 <pre class="prettyprint">
 
 $$ cd /data1/santhilal/rnaseq_analysis/Alignment
-$$ nohup /home/santhilal/bin/hisat2-2.0.5/hisat2 --phred33 -p 8 --qc-filter -x /data1/santhilal/rnaseq_analysis/genome/HISAT2_index/hg38 -U /data1/santhilal/rnaseq_analysis/fastq/DEANR1KD_1.fastq.gz -S /data1/santhilal/rnaseq_analysis/Alignment/DEANR1KD_1/DEANR1KD_1.sam | /home/santhilal/bin/samtools/samtools view -bS -o /data1/santhilal/rnaseq_analysis/Alignment/DEANR1KD_1/DEANR1KD_1.bam - > nohupDEANR1KD_1_Alignment.out 2>&1
+$$ nohup /home/santhilal/bin/hisat2-2.0.5/hisat2 --phred33 -p 8 --qc-filter -x /data1/santhilal/rnaseq_analysis/genome/HISAT2_index/hg38 -U /data1/santhilal/rnaseq_analysis/fastq/DEANR1KD_1.fastq.gz | /home/santhilal/bin/samtools/samtools view -bS -o /data1/santhilal/rnaseq_analysis/Alignment/DEANR1KD_1/DEANR1KD_1.bam - > nohupDEANR1KD_1_Alignment.out 2>&1
 
 
 </pre>
