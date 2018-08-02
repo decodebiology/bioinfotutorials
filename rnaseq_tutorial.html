@@ -289,6 +289,7 @@ Next step is alignment of downloaded fastq files to the indexed genome. Since we
 <pre class="prettyprint">
 
 $$ cd /data1/santhilal/rnaseq_analysis/Alignment
+$$ mkdir WT_1 WT_2 DEANR1KD_1 DEANR1KD_2 FOXA2KD_1 FOXA2KD_2	
 $$ nohup /home/santhilal/bin/hisat2-2.0.5/hisat2 --phred33 -p 8 --qc-filter -x /data1/santhilal/rnaseq_analysis/genome/HISAT2_index/hg38 -U /data1/santhilal/rnaseq_analysis/fastq/DEANR1KD_1.fastq.gz | samtools view -bS -o /data1/santhilal/rnaseq_analysis/Alignment/DEANR1KD_1/DEANR1KD_1.bam - > nohupDEANR1KD_1_Alignment.out 2>&1
 
 
@@ -347,7 +348,8 @@ After aligning the samples and checking the alignment quality, we are going to q
 For quantification, we need to provide GTF files containing information about genes (by transcripts and exons) and our BAM files. This will outputa a table containing reads from individual samples gene-wise in the order we provide. <a href="http://bioinf.wehi.edu.au/featureCounts/" target="new">Examples/guideline</a>, running featureCounts. Complete <a href="http://bioinf.wehi.edu.au/subread-package/SubreadUsersGuide.pdf" target="new">USER GUIDE</a> for featureCount quantification is on page 30 of user guide.	
 	
 <pre class="prettyprint">
-		
+
+	
 $$ /home/santhilal/bin/subread-1.5.0-p1-source/bin/featureCounts -T 6 -t exon -g gene_id -Q 30 -F GTF -a /data1/santhilal/rnaseq_analysis/annotation/Homo_sapiens.GRCh38.87.gtf -o /data1/santhilal/rnaseq_analysis/quantification/hg38_ensembl_GRCh38.87_counts.txt /data1/santhilal/rnaseq_analysis/Alignment/WT_1/WT_1.bam /data1/santhilal/rnaseq_analysis/Alignment/WT_2/WT_2.bam /data1/santhilal/rnaseq_analysis/Alignment/DEANR1KD_1/DEANR1KD_1.bam /data1/santhilal/rnaseq_analysis/Alignment/DEANR1KD_2/DEANR1KD_2.bam /data1/santhilal/rnaseq_analysis/Alignment/FOXA2KD_1/FOXA2KD_1.bam /data1/santhilal/rnaseq_analysis/Alignment/FOXA2KD_2/FOXA2KD_2.bam
 
 </pre>
