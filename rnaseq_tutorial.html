@@ -124,6 +124,17 @@ $$ tar -zxvf subread-1.5.1-Linux-x86_64.tar.gz
 
 </pre>
 
+<pre class="prettyprint">
+
+$$ cd /home/santhilal/bin/
+$$ wget https://github.com/samtools/samtools/releases/download/1.9/samtools-1.9.tar.bz2
+$$ tar -xvjf samtools-1.9.tar.bz2
+$$ cd samtools-1.9
+$$ ./configure
+$$ make
+
+</pre>
+
 
 	<h3 id="prepare-annot"> Preparing/organizing directories and annotation files for the analysis</h3>
 
@@ -282,7 +293,7 @@ $$ nohup /home/santhilal/bin/hisat2-2.0.5/hisat2-build -p 8 /data1/santhilal/rna
 
 Next step is alignment of downloaded fastq files to the indexed genome. Since we are going to submit more than one alignment jobs in the background. All the logs from the submitting jobs will be overwritten to the same file '/data1/santhilal/rnaseq_analysis/Alignment/nohup.out'. To avoid this, we are going to give unique 'nohup' name for each submission. For that we will be renaming the default 'nohup.out' to a name appropriate for the job. Every alignment program outputs alignment in SAM format.<br><br>
 
-<em>Sequence Alignment or Map format (SAM)</em>: The compressed or binary format of SAM files is called BAM (Binary Alignment or Map) format. Always remember to output the alignment in BAM format because SAM format takes 10 times of more storage space compared to BAM. The HISAT2 alignment always produce SAM file format as output. We need to parse/pipe to output from HISAT2 to samtools and instantly converting it to BAM without saving the SAM file. We did not install samtools previously because it is already available on pinbot server.
+<em>Sequence Alignment or Map format (SAM)</em>: The compressed or binary format of SAM files is called BAM (Binary Alignment or Map) format. Always remember to output the alignment in BAM format because SAM format takes 10 times of more storage space compared to BAM. The HISAT2 alignment always produce SAM file format as output. We need to parse/pipe to output from HISAT2 to samtools and instantly converting it to BAM without saving the SAM file and finally sorting the BAM file by chromosome names. Sorting is necessary for some read quantification programs like HTSeq-count ut in this tutorial we use featureCounts for quantification which do not expect BAM file to be sorted.
 
 <!-- $$ nohup /home/santhilal/bin/hisat2-2.0.5/hisat2 --phred33 -p 8 --qc-filter -x /data1/santhilal/rnaseq_analysis/genome/HISAT2_index/hg38 -U /data1/santhilal/rnaseq_analysis/fastq/DEANR1KD_1.fastq.gz -S /data1/santhilal/rnaseq_analysis/Alignment/DEANR1KD_1/DEANR1KD_1.sam | /home/santhilal/bin/samtools/samtools view -bS -o /data1/santhilal/rnaseq_analysis/Alignment/DEANR1KD_1/DEANR1KD_1.bam - > nohupDEANR1KD_1_Alignment.out 2>&1-->
 
@@ -290,7 +301,7 @@ Next step is alignment of downloaded fastq files to the indexed genome. Since we
 
 $$ cd /data1/santhilal/rnaseq_analysis/Alignment
 $$ mkdir WT_1 WT_2 DEANR1KD_1 DEANR1KD_2 FOXA2KD_1 FOXA2KD_2	
-$$ nohup /home/santhilal/bin/hisat2-2.0.5/hisat2 --phred33 -p 8 --qc-filter -x /data1/santhilal/rnaseq_analysis/genome/HISAT2_index/hg38 -U /data1/santhilal/rnaseq_analysis/fastq/DEANR1KD_1.fastq.gz | samtools view -bS -o /data1/santhilal/rnaseq_analysis/Alignment/DEANR1KD_1/DEANR1KD_1.bam - &
+$$ nohup /home/santhilal/bin/hisat2-2.0.5/hisat2 --phred33 -p 8 --qc-filter -x /data1/santhilal/rnaseq_analysis/genome/HISAT2_index/hg38 -U /data1/santhilal/rnaseq_analysis/fastq/DEANR1KD_1.fastq.gz | /home/santhilal/bin/samtools-1.9/samtools view -@ 8 -bS /data1/santhilal/rnaseq_analysis/Alignment/DEANR1KD_1/DEANR1KD_1.sam | /home/santhilal/bin/samtools-1.9/samtools sort -@ 8 -O BAM -o /data1/santhilal/rnaseq_analysis/Alignment/DEANR1KD_1/DEANR1KD_1_sorted.bam - &
 
 
 </pre>
@@ -311,7 +322,7 @@ SRR1958167.19438259	16	10	31558	1	47M4S	*	0	0	GGCTGAGGCAGGAGAGTCACTTGAACCCGGGAGG
 SRR1958167.6675573	272	10	39012	0	51M	*	0	0	AGACACAACCAAAAAAGAGAATTTTAGACCACTATCCTTGATGAACATTGG	DBGHEIHFJJJJJJIHEJJHGGHHHHGHIIJJIJJJGIFHDHHFFDDB@@@	NH:i:10	HI:i:2	AS:i:48	nM:i:1
 SRR1958167.6855956	0	10	46995	3	1S50M	*	0	0	CGGCTGTCAGAACACAGTAAAGAATCCACACTGCTTCCCCCCTTTACCTAG	CCCFFFFFHHHHHJIJJIJJJJIJJJJJJJJIJIJJJJJJJJHIJHJJIJG	NH:i:2	HI:i:1	AS:i:49	nM:i:0
 </pre>
-Refer <a href="http://samtools.github.io/hts-specs/SAMv1.pdf" target="new">SAM format manual</a> for complete description.
+Refer <a href="http://samtools.github.io/hts-specs/SAMv1.pdf" target="new">SAM format manual</a> section 1.4 for complete description.
 
 
 
@@ -330,7 +341,7 @@ or you can run all the jobs in background.
 
 <pre class="prettyprint">
 
-$$ export PATH=$PATH:/home/santhilal/bin/samtools/samtools
+$$ export PATH=$PATH:/home/santhilal/bin/samtools-1.9/samtools
 $$ cd /data1/santhilal/rnaseq_analysis/Alignment 
 $$ nohup /home/santhilal/bin/samstat-1.5.1/src/samstat /data1/santhilal/rnaseq_analysis/Alignment/*/*.bam > nohupSAMstat.out 2>&1
 	
@@ -350,7 +361,7 @@ For quantification, we need to provide GTF files containing information about ge
 <pre class="prettyprint">
 
 	
-$$ /home/santhilal/bin/subread-1.5.0-p1-source/bin/featureCounts -T 6 -t exon -g gene_id -Q 30 -F GTF -a /data1/santhilal/rnaseq_analysis/annotation/Homo_sapiens.GRCh38.87.gtf -o /data1/santhilal/rnaseq_analysis/quantification/hg38_ensembl_GRCh38.87_counts.txt /data1/santhilal/rnaseq_analysis/Alignment/WT_1/WT_1.bam /data1/santhilal/rnaseq_analysis/Alignment/WT_2/WT_2.bam /data1/santhilal/rnaseq_analysis/Alignment/DEANR1KD_1/DEANR1KD_1.bam /data1/santhilal/rnaseq_analysis/Alignment/DEANR1KD_2/DEANR1KD_2.bam /data1/santhilal/rnaseq_analysis/Alignment/FOXA2KD_1/FOXA2KD_1.bam /data1/santhilal/rnaseq_analysis/Alignment/FOXA2KD_2/FOXA2KD_2.bam
+$$ nohup /home/santhilal/bin/subread-1.5.0-p1-source/bin/featureCounts -T 6 -t exon -g gene_id -Q 30 -F GTF -a /data1/santhilal/rnaseq_analysis/annotation/Homo_sapiens.GRCh38.87.gtf -o /data1/santhilal/rnaseq_analysis/quantification/hg38_ensembl_GRCh38.87_counts.txt /data1/santhilal/rnaseq_analysis/Alignment/WT_1/WT_1.bam /data1/santhilal/rnaseq_analysis/Alignment/WT_2/WT_2.bam /data1/santhilal/rnaseq_analysis/Alignment/DEANR1KD_1/DEANR1KD_1.bam /data1/santhilal/rnaseq_analysis/Alignment/DEANR1KD_2/DEANR1KD_2.bam /data1/santhilal/rnaseq_analysis/Alignment/FOXA2KD_1/FOXA2KD_1.bam /data1/santhilal/rnaseq_analysis/Alignment/FOXA2KD_2/FOXA2KD_2.bam > nohupFeatureCounts.out 2>&1
 
 </pre>
 	
