@@ -361,7 +361,7 @@ For quantification, we need to provide GTF files containing information about ge
 <pre class="prettyprint">
 
 	
-$$ nohup /home/santhilal/bin/subread-1.5.0-p1-source/bin/featureCounts -T 6 -t exon -g gene_id -Q 30 -F GTF -a /data1/santhilal/rnaseq_analysis/annotation/Homo_sapiens.GRCh38.87.gtf -o /data1/santhilal/rnaseq_analysis/quantification/hg38_ensembl_GRCh38.87_counts.txt /data1/santhilal/rnaseq_analysis/Alignment/WT_1/WT_1.bam /data1/santhilal/rnaseq_analysis/Alignment/WT_2/WT_2.bam /data1/santhilal/rnaseq_analysis/Alignment/DEANR1KD_1/DEANR1KD_1.bam /data1/santhilal/rnaseq_analysis/Alignment/DEANR1KD_2/DEANR1KD_2.bam /data1/santhilal/rnaseq_analysis/Alignment/FOXA2KD_1/FOXA2KD_1.bam /data1/santhilal/rnaseq_analysis/Alignment/FOXA2KD_2/FOXA2KD_2.bam > nohupFeatureCounts.out 2>&1
+$$ nohup /home/santhilal/bin/subread-1.5.0-p1-source/bin/featureCounts -T 6 -t exon -g gene_id -Q 30 -F GTF -a /data1/santhilal/rnaseq_analysis/annotation/Homo_sapiens.GRCh38.87.gtf -o /data1/santhilal/rnaseq_analysis/quantification/hg38_ensembl_GRCh38.87_counts.txt /data1/santhilal/rnaseq_analysis/Alignment/WT_1/WT_1_sorted.bam /data1/santhilal/rnaseq_analysis/Alignment/WT_2/WT_2_sorted.bam /data1/santhilal/rnaseq_analysis/Alignment/DEANR1KD_1/DEANR1KD_1_sorted.bam /data1/santhilal/rnaseq_analysis/Alignment/DEANR1KD_2/DEANR1KD_2_sorted.bam /data1/santhilal/rnaseq_analysis/Alignment/FOXA2KD_1/FOXA2KD_1_sorted.bam /data1/santhilal/rnaseq_analysis/Alignment/FOXA2KD_2/FOXA2KD_2_sorted.bam > nohupFeatureCounts.out 2>&1
 
 </pre>
 	
