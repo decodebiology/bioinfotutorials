@@ -13,6 +13,7 @@
 <link rel="stylesheet" href="css/prettify.css">
 </head>
 <body>
+	<button onclick="topFunction()" id="myBtn" title="Go to top">Top</button>
 <div class="wrapper">
 <nav>
  
@@ -655,6 +656,24 @@ Now we try to filter the differentially expressed genes using log2fold change >=
 <script type="text/javascript" src="js/prettify/prettify.js"></script> 
 <script src="https://google-code-prettify.googlecode.com/svn/loader/run_prettify.js?lang=css&skin=sunburst"></script>
 <script src="js/layout.js"></script>
+<script>
+// When the user scrolls down 20px from the top of the document, show the button
+window.onscroll = function() {scrollFunction()};
+
+function scrollFunction() {
+    if (document.body.scrollTop > 20 || document.documentElement.scrollTop > 20) {
+        document.getElementById("myBtn").style.display = "block";
+    } else {
+        document.getElementById("myBtn").style.display = "none";
+    }
+}
+
+// When the user clicks on the button, scroll to the top of the document
+function topFunction() {
+    document.body.scrollTop = 0;
+    document.documentElement.scrollTop = 0;
+}
+</script>
 </body>
 </html>
       <!--h2> RNA sequencing analysis</h2-->

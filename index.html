@@ -13,6 +13,7 @@
 <link rel="stylesheet" href="css/prettify.css">
 </head>
 <body>
+	<button onclick="topFunction()" id="myBtn" title="Go to top">Top</button>
 <div class="wrapper">
 <nav>
  
@@ -265,7 +266,9 @@ $$ wc -l *.list
 </pre>
 In the above command '<b>*</b>' is wild-card character. It tells the command to check number of genes/lines in the files where the file names ends with '<b>.list</b>' (match all the files ending with '.list'). Try commands 'wc' and 'wc -c' over files.
 
-      <h3 id="grep"> In this section you will be introduced to the concept of piping, where you pass output of one command to the next command. You can do unlimited number of piping in unix. Now we are going to match word or pattern in the files (start pipe: combining different commands to get required output)</h3>
+      <h3 id="grep"> Pattern matching using grep</h3>
+	  In this section you will be introduced to the concept of piping, where you pass output of one command to the next command. You can do unlimited number of piping in unix. Now we are going to match word or pattern in the files (start pipe: combining different commands to get required output)
+
 Match genes start with 'USP'.
 <pre class="prettyprint">
 $$ cat H0.list | grep "^USP*"
@@ -599,5 +602,23 @@ chr1	89295	133723	ENSG00000238009:RP11-34P13.7	0	-
 <script type="text/javascript" src="js/prettify/prettify.js"></script> 
 <script src="https://google-code-prettify.googlecode.com/svn/loader/run_prettify.js?lang=css&skin=sunburst"></script>
 <script src="js/layout.js"></script>
+<script>
+// When the user scrolls down 20px from the top of the document, show the button
+window.onscroll = function() {scrollFunction()};
+
+function scrollFunction() {
+    if (document.body.scrollTop > 20 || document.documentElement.scrollTop > 20) {
+        document.getElementById("myBtn").style.display = "block";
+    } else {
+        document.getElementById("myBtn").style.display = "none";
+    }
+}
+
+// When the user clicks on the button, scroll to the top of the document
+function topFunction() {
+    document.body.scrollTop = 0;
+    document.documentElement.scrollTop = 0;
+}
+</script>
 </body>
 </html>
