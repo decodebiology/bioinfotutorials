@@ -70,7 +70,7 @@
       <h3 id="intro-unix"> Introduction</h3>
 	In order to practice UNIX commands you need a workspace called <b>shell</b> or <b>shell prompt</b>. This shell is an interface which passes commands to the UNIX system to do different tasks depend on the commands provided by the user. All the commands from this tutorial can be run on Linux/Ubuntu terminal or Microsoft Windows 10 bash utility. Get description of commands from <a href="http://explainshell.com/" target="new">http://explainshell.com</a>.
 	<h3 id="wget"> Retrieve files or directories from online (FTP/HTTP)</h3>
-Since you do not have any files in your home directory, you will be using the files prepared for this course. With wget utility from unix, you can download any files from web to your local directory in Linux.
+Since you do not have any files in your home directory, you will be using the files prepared for this course. With wget utility from unix, you can download any files from web to your local directory on Linux.
 
 <pre class="prettyprint">
 
@@ -79,11 +79,13 @@ $$ wget http://kandurilab.org/users/santhilal/courses/UNIX/materials/course_file
 
 </pre>
 
-<mark>Note: You will also learn in this course how to retrieve multiple files from the web at once.</mark>
+Every command in unix has its own help section. To check options available for individual commands you can use '--help' or '-h' after the command to explore the help section or documentation. Test this with 'wget' command by typing 'wget --help' (long format argument) or 'wget -h' (short format argument).
+
+<mark>Note: You will also learn in this course how to retrieve multiple files from the web at once in later part of the tutorial.</mark>
 
 
       <h3 id="ls"> Listing files in the directory/folder</h3>
-Please list the files and folders in your home folder. <br>
+List the files and folders (contents) in your home folder. <br>
 
 Shows all the files and folders in the current directory:
 <pre class="prettyprint">
@@ -103,7 +105,7 @@ $$ ls -lh
 <mark><b>Question U1: What is the difference between 2nd and 3rd command ? In what situation 3rd command will be useful ? </b></mark><br>
 Tip: Read more information on <b>ls</b> command from the following <a href="https://linuxconfig.org/understanding-of-ls-command-with-a-long-listing-format-output-with-permission-bits" target="new">link</a>.
 
-      <h3 id="pwd"> Check your working directory/folder</h3>
+      <h3 id="pwd"> Check your current working directory/folder</h3>
 <pre class="prettyprint">
 $$ pwd
 /home/santhilal
@@ -124,8 +126,8 @@ course_file_repo.zip <b>practice</b>
 
 
 
-Above command copied your file to the newly created directory 'practice'. Now you have two copies of 'course_file_repo.zip', one in home directory and another in 'practice' directory. You remove the one from your home directory to manage your space efficiently. Whenever you remove some file, always check whether you are the right directory or removing the right file. Because in command line you do not have 'undo' option to bring your files back.<br>
-TIP: Whenever you want to move some files to another directory, always use copy 'cp' command to copy it from source to destination directory and then use 'rm' to remove it from the source directory. You may use the directly the move 'mv' command to move your files from source to destination directory at your own risk.
+Above command copied your file to the newly created directory 'practice'. Now you have two copies of 'course_file_repo.zip', one in home directory and other in 'practice' directory. You remove the one from your home directory to manage your space efficiently. Whenever you remove some file, always check whether you are on the right directory or removing the right file. Because in command line you do not have 'undo' option to bring your files back.<br>
+TIP: Whenever you want to move some files to other directory, I always recommend use copy 'cp' command to copy from source to destination directory and then use 'rm' to remove it from the source directory. You may use the directly the move 'mv' command to move your files from source to destination directory at your own risk.
 
 
 <pre class="prettyprint">
@@ -139,9 +141,9 @@ $$ <b>practice</b>
 
 </pre>
 
-<b>Task</b>: We are going how to, <br>
+<b>Task</b>: We are going to, <br>
 
-1) Create a folder named 'dummy' and a files inside folder 'dummy' named 'file1.txt' and 'file2.txt'<br>
+1) Create a folder named 'dummy' and some files inside the folder 'dummy' named 'file1.txt' and 'file2.txt'<br>
 2) Edit the content of the files<br>
 3) Rename folder to 'mydummy'<br>
 4) Rename files to 'file1.txt' -> 'myfile1.txt', 'file2.txt' -> 'myfile2.txt'<br>
@@ -171,24 +173,24 @@ Step 3:<br>
 
 $$ pwd
 $$ /home/santhilal/dummy
-$$ cd ..
+$$ cd .. # Since you cannot be inside the directory and rename the same directory you are in, we will go back one directory by using this command.
 $$ mv dummy mydummy
 
 </pre>
 
 Step 4:<br>
 
-Similarly rename 'file1.txt' -> 'myfile1.txt', 'file2.txt' -> 'myfile2.txt'<br><br>
-Let's merge the files
+Similarly please rename 'file1.txt' -> 'myfile1.txt', 'file2.txt' -> 'myfile2.txt'<br><br>
+Now let's merge the created text files using command 'cat' (concatenate).
 
 <pre class="prettyprint">
 
-$$ cat myfile1 myfile2 > mergedfile.txt
-$$ cat mergedfile.txt
+$$ cat myfile1 myfile2 > mergedfile.txt # This merges the contents of the file in a new file
+$$ cat mergedfile.txt # Display the content of merged file
 
 </pre>
 
-Step 5: Removing file<br>
+Step 5: Removing/deleting file<br>
 
 <pre class="prettyprint">
 
@@ -200,7 +202,7 @@ Removing files start with 'myfile'<br>
 
 <pre class="prettyprint">
 
-$$ rm myfile*
+$$ rm myfile* # Removes any files start with name 'myfile'. Here '*' means match anything after 'myfile'. This is called pattern matching.
 
 </pre>
 
@@ -212,7 +214,7 @@ $$ rm -r mydummy
 
 </pre>
 
-      <h3 id="cd"> Change or navigate directories</h3>
+      <h3 id="cd"> Change or navigate directories. Now we are going to navigate to the directory where we stored our downloaded course material.</h3>
 <pre class="prettyprint">
 $$ cd <b>practice</b>/
 $$ ls
@@ -228,12 +230,12 @@ $$ unzip course_file_repo.zip
 </pre>
 <mark><b>Question U2: How many folders are in 'course_file_repo.zip' ? Please check the size of individual files in each folder and report.</mark></b>
 
-      <h3 id="head"> Display part of content of the file</h3>
-Now goto directory/folder 'gene_lists'.
+      <h3 id="head"> Display part of the contents of the file</h3>
+Now navigate to directory/folder 'gene_lists'.
 <pre class="prettyprint">
 $$ cd gene_lists
 </pre>
-List the files in the directory.
+List the files from the directory.
 <pre class="prettyprint">
 $$ ls
 </pre>
@@ -252,7 +254,7 @@ $$ more H0.list
 <pre class="prettyprint">
 $$ cat ambiguous.list
 </pre>
-<mark>Tip: If the file is bigger (say million lines) and you executed the above command, it will start printing files line by line on screen. To stop printing just type '<b>Cntrl+c</b>'.</mark>
+<mark>WARNING: If the file is bigger (say million lines) and you executed the above command, it will start printing files line by line on the screen. To stop printing just type '<b>Cntrl+c</b>'.</mark>
       <h3 id="wc"> Count words or lines</h3>
 <pre class="prettyprint">
 $$ wc -l H0.list
@@ -263,18 +265,17 @@ $$ wc -l *.list
 </pre>
 In the above command '<b>*</b>' is wild-card character. It tells the command to check number of genes/lines in the files where the file names ends with '<b>.list</b>' (match all the files ending with '.list'). Try commands 'wc' and 'wc -c' over files.
 
-      <h3 id="grep"> matching word or pattern in the files (start pipe: combining different commands to get required output)</h3>
+      <h3 id="grep"> In this section you will be introduced to the concept of piping, where you pass output of one command to the next command. You can do unlimited number of piping in unix. Now we are going to match word or pattern in the files (start pipe: combining different commands to get required output)</h3>
 Match genes start with 'USP'.
 <pre class="prettyprint">
 $$ cat H0.list | grep "^USP*"
 $$ cat H0.list | grep "USP*"
-$$ cat H0.list | grep "\.[0-9]$"
 </pre>
 Match genes ending with '.' followed by some digit/number.
 <pre class="prettyprint">
 $$ cat H0.list | grep "\.[0-9]$"
 </pre>
-In the above command '\' is used to escape '.' character to be used as pattern matching expression. See the difference by removing '\'. You will see all the genes ending with some number with preceeding one character/number match. In short '.' in pattern matching means match any one letter/character/digit. Lean about pattern matching from the following <a href="http://www.thegeekstuff.com/2011/01/regular-expressions-in-grep-command/?ref" target="new">link</a>.
+From the above command you will see all the genes ending with some number with preceeding one character/number match. And in the above command '\' is used to escape '.' character not to be used as pattern matching expression. See the difference by removing '\'. As you know from previous section that '*' matches with any number of letter/character/digit. In the above command we are using '.', which in pattern matching means match anythin but only one letter/character/digit. That is the reason we have to tell 'grep' command to consider '.' as character but not as pattern matching entity. Here '[0-9]' means any number ranging from 0 to 9. And '$' represents the ending part of pattern matching. If you have anything after number, it will not match since you wanted the gene name to end with number. Lean more about pattern matching from the following <a href="http://www.thegeekstuff.com/2011/01/regular-expressions-in-grep-command/?ref" target="new">link</a>.
 Try these examples to know the significance of '.' in pattern matching.
 <pre class="prettyprint">
 $$ cat H0.list | grep "USP."
@@ -287,20 +288,20 @@ The first command will match one character after 'USP' and the next one matches 
 
       <h3 id="unique"> Get unique items from the file</h3>
 
-Check what are the genes repeated in the list 'ambiguous.list',
+Check what are the genes repeated in the list 'ambiguous.list' (duplicates),
 <pre class="prettyprint">
 
 $$ cat ambiguous.list | sort | uniq -d
 
 </pre>
-Check genes wihtout duplicate entries,
+Check genes without duplicate entries (unique), 
 <pre class="prettyprint">
 
 $$ cat ambiguous.list | sort | uniq -u
 
 </pre>
 
-Making a list without any duplicate gene entries,
+Making a list without any duplicate gene entries. By default 'uniq' command gives you the unique entries from the file (even without using -u argument).
 <pre class="prettyprint">
 
 $$ cat ambiguous.list | sort | uniq > ambiguous_noduplicates.list
@@ -318,7 +319,7 @@ $$ sort H12.list > H12_sorted.list
 
 <mark><b>Question U4: In the above example, you will get sorted list as 'A->Z'. What will be your command to get 'Z->A' order ?</b></mark>
 
-      <h3 id="comm"> Overlaps between two lists</h3>
+      <h3 id="comm"> Number of overlapping entries between two lists</h3>
 
 <img src="img/comm_command.png"></img><br>
 
@@ -352,13 +353,15 @@ $$ nano hg38_gene_annotation_mart_export.txt
 
 </pre>
 
-Whenever you open a file or dataset, observe the structure of the dataset well. Now we are going to count number of genes, transcripts or isoforms in the annotation file. Also we are going to check how many protein coding genes are in the annotation.<br>
+Whenever you open a file or dataset, observe the structure of the dataset well. Now we are going to count number of genes, transcripts or isoforms in the annotation file. Also we are going to check how many protein coding genes are in the annotation. Most of the genes has multiple isoforms. We are using human annotation from ensembl database in this tutorial. In ensembl annotation, the gene names always start with 'ENSG' and isoforms/transcripts of those gene names starts with 'ENST'. Below image shows the structure of the file 'hg38_gene_annotation_mart_export.txt' where you can find <strong>SERTAD4-AS1</strong> has gene name '<strong>ENSG00000280963</strong>' and it has two transcripts variants or isoforms such as '<strong>ENST00000625817</strong>' and '<strong>ENST00000628975</strong>'. Similarly you can also see that '<strong>FOXO6</strong>' also has two isoforms.<br>
+
+<img src="img/describe_ENSGENST.png">
 
 <pre class="prettyprint">
 
-$$ cat hg38_gene_annotation_mart_export.txt | grep -v "^#" | cut -f1 | sort | uniq | wc -l
-$$ cat hg38_gene_annotation_mart_export.txt | grep -v "^#" | cut -f7 | sort | uniq | wc -l
-$$ cat hg38_gene_annotation_mart_export.txt | grep -v "^#" | grep -w "protein_coding" | cut -f1 | sort | uniq | wc -l
+$$ cat hg38_gene_annotation_mart_export.txt | grep -v "^#" | cut -f1 | sort | uniq | wc -l # This counts total number of unique genes in the annotation
+$$ cat hg38_gene_annotation_mart_export.txt | grep -v "^#" | cut -f7 | sort | uniq | wc -l # This counts total number of unique transcripts
+$$ cat hg38_gene_annotation_mart_export.txt | grep -v "^#" | grep -w "protein_coding" | cut -f1 | sort | uniq | wc -l # Counts only total number of protein coding genes
 
 </pre>
 
@@ -369,7 +372,7 @@ $$ cat hg38_gene_annotation_mart_export.txt | grep -v "^#" | grep -w "protein_co
 
       <h3 id="sed"> Stream editor used for replacing/inserting/deleting content of file</h3>
 <!--h1>zcat Homo_sapiens.GRCh38.87.gtf.gz | awk 'BEGIN{FS="\t"}{split($9,a,";"); if($3~"gene") print a[1]"\t"a[3]"\tchr"$1":"$4"-"$5"\t"a[5]"\t"$7"\t"$5-$4}' | sed 's/gene_id "//' | sed 's/gene_biotype "//'| sed 's/gene_name "//' | sed 's/"//g' | sed '1i\Geneid\tGeneSymbol\tChromosome\tClass\tStrand\tLength' | sed 's/ //g' | head<-->
-'Sed' command comes in border/bridge between basic and advanced unix commands. This command has lot of functionality. We are going to learn only limited functionality in this course (this is enough for manupulating the RNAseq data).<br>
+'Sed' command is one of the border/bridge between basic and advanced unix commands. This command has lot of functionality. We are going to learn only limited functionality in this course (this is enough for working with the RNA-seq data). In this section we are going to make unstructured file into well structured format using only 'sed' command.<br>
 
 <b>Tidy Table A:</b>
 <pre class="prettyprint">
@@ -403,13 +406,15 @@ ENSG00000238009	RP11-34P13.7	chr1:89295-133723	lincRNA	-	44428
 
 </pre>
 
+<p>We normally use 'cat' command to display the contents of the file or pipe the contents of the file to next command. In Unix, we also have an option to work with compressed file without uncompressing it (only works if it is compressed in '.gz' format). In this case we use 'zcat' instead of 'cat' command.</p>
+
 <pre class="prettyprint">
 
 $$ zcat Homo_sapiens.GRCh38.87_badStructure.table.gz | sed 's/gene_id "//' | sed 's/gene_biotype "//'| sed 's/gene_name "//' | sed 's/"//g' | sed '1i\Geneid\tGeneSymbol\tChromosome\tClass\tStrand\tLength' | sed 's/ //g' | head
 
 </pre>
 
-Please save the pretty <b>Table B</b> with file name '<b>Homo_sapiens.GRCh38.87_annotation.table</b>'. To become master in sed follow this <a href="https://www.gnu.org/software/sed/manual/sed.html" target="new">documentation</a>. Minimum knowledge about 'sed' (replacing, deleting, printing, inserting) is enough to deal with RNA-seq data analysis.
+Please save the pretty <b>Table B</b> with file name '<b>Homo_sapiens.GRCh38.87_annotation.table</b>'. <strong>Tip:</strong> you save any commands output just by using '>' (redirection) followed by new/output filename. <br>To become master in sed follow this <a href="https://www.gnu.org/software/sed/manual/sed.html" target="new">documentation</a>. Minimum knowledge about 'sed' (replacing, deleting, printing, inserting) is enough to deal with RNA-seq data analysis.
 
 For printing specific range of lines from the file.
 
@@ -428,7 +433,7 @@ $$ cat Homo_sapiens.GRCh38.87_annotation.table | sed '1d' | head
 
 </pre>
 
-<mark><b>Question U8: Report the difference when you use "sed '1d' Homo_sapiens.GRCh38.87_annotation.table" and "sed -i '1d' Homo_sapiens.GRCh38.87_annotation.table" ?</b></mark>
+<mark><b>Question U8: Report the difference when you use "<em>sed '1d' Homo_sapiens.GRCh38.87_annotation.table</em>" and "<em>sed -i '1d' Homo_sapiens.GRCh38.87_annotation.table</em>" ?</b></mark>
 
       <h3 id="tr"> Translate or replace content of file</h3>
 Translate 'tr' command is a simple utility and not used extensively. Since there are better alternatives like 'sed', this command is less used. Only advantage of using 'tr' over other commands is when you want to translate a text from Lowe case to upper case or vice versa. Please practice 'tr' command from following <a href="http://www.thegeekstuff.com/2012/12/linux-tr-command" target="new">link</a>.<br>
