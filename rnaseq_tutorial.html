@@ -302,7 +302,7 @@ Next step is alignment of downloaded fastq files to the indexed genome. Since we
 
 $$ cd /data1/santhilal/rnaseq_analysis/Alignment
 $$ mkdir WT_1 WT_2 DEANR1KD_1 DEANR1KD_2 FOXA2KD_1 FOXA2KD_2	
-$$ nohup /home/santhilal/bin/hisat2-2.0.5/hisat2 --phred33 -p 8 --qc-filter -x /data1/santhilal/rnaseq_analysis/genome/HISAT2_index/hg38 -U /data1/santhilal/rnaseq_analysis/fastq/DEANR1KD_1.fastq.gz | /home/santhilal/bin/samtools-1.9/samtools view -@ 8 -bS /data1/santhilal/rnaseq_analysis/Alignment/DEANR1KD_1/DEANR1KD_1.sam | /home/santhilal/bin/samtools-1.9/samtools sort -@ 8 -O BAM -o /data1/santhilal/rnaseq_analysis/Alignment/DEANR1KD_1/DEANR1KD_1_sorted.bam - &
+$$ nohup /home/santhilal/bin/hisat2-2.0.5/hisat2 --phred33 -p 8 --qc-filter -x /data1/santhilal/rnaseq_analysis/genome/HISAT2_index/hg38 -U /data1/santhilal/rnaseq_analysis/fastq/DEANR1KD_1.fastq.gz | /home/santhilal/bin/samtools-1.9/samtools view -@ 8 -bS - | /home/santhilal/bin/samtools-1.9/samtools sort -@ 8 -O BAM -o /data1/santhilal/rnaseq_analysis/Alignment/DEANR1KD_1/DEANR1KD_1_sorted.bam - &
 
 
 </pre>
