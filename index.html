@@ -375,9 +375,9 @@ $$ cat hg38_gene_annotation_mart_export.txt | grep -v "^#" | grep -w "protein_co
 
       <h3 id="sed"> Stream editor used for replacing/inserting/deleting content of file</h3>
 <!--h1>zcat Homo_sapiens.GRCh38.87.gtf.gz | awk 'BEGIN{FS="\t"}{split($9,a,";"); if($3~"gene") print a[1]"\t"a[3]"\tchr"$1":"$4"-"$5"\t"a[5]"\t"$7"\t"$5-$4}' | sed 's/gene_id "//' | sed 's/gene_biotype "//'| sed 's/gene_name "//' | sed 's/"//g' | sed '1i\Geneid\tGeneSymbol\tChromosome\tClass\tStrand\tLength' | sed 's/ //g' | head<-->
-'Sed' command is one of the border/bridge between basic and advanced unix commands. This command has lot of functionality. We are going to learn only limited functionality in this course (this is enough for working with the RNA-seq data). In this section we are going to make unstructured file into well structured format using only 'sed' command.<br>
+'Sed' command is one of the border/bridge between basic and advanced unix commands. This command has lot of functionality. We are going to learn only limited functionality in this course (this is enough for working with the RNA-seq data). In this section we are going to make unstructured table into well structured table using only 'sed' command.<br>
 
-<b>Tidy Table A:</b>
+<b>Tidy Data A: </b>Each line follows same format. Such as, column1_header&#60;SPACE&#62;"ID"&#60;TAB&#62;column2_header&#60;SPACE&#62;"NAME"... so on. But this format is not suitable for a table. Here we are going to convert this tidy (well-defined data: all lines follows same format) into proper table format as in second table (Pretty Table B). 
 <pre class="prettyprint">
 
 gene_id "ENSG00000223972"	 gene_name "DDX11L1"	chr1:11869-14409	 gene_biotype "transcribed_unprocessed_pseudogene"	+	2540
@@ -409,11 +409,11 @@ ENSG00000238009	RP11-34P13.7	chr1:89295-133723	lincRNA	-	44428
 
 </pre>
 
-<p>We normally use 'cat' command to display the contents of the file or pipe the contents of the file to next command. In Unix, we also have an option to work with compressed file without uncompressing it (only works if it is compressed in '.gz' format). In this case we use 'zcat' instead of 'cat' command.</p>
+<p>We normally use 'cat' command to display the contents of the file or to pipe/pass the contents of the file to next command. In Unix, we also have an option to work with compressed file without uncompressing it (only works if it is compressed in '.gz' format). In this case we use 'zcat' instead of 'cat' command. You will find 'Homo_sapiens.GRCh38.87_badStructure.table.gz' file in the directory 'annotation'. Try to use 'head' after each pipe, to check how the output looks like from the previous command.</p>
 
 <pre class="prettyprint">
 
-$$ zcat Homo_sapiens.GRCh38.87_badStructure.table.gz | sed 's/gene_id "//' | sed 's/gene_biotype "//'| sed 's/gene_name "//' | sed 's/"//g' | sed '1i\Geneid\tGeneSymbol\tChromosome\tClass\tStrand\tLength' | sed 's/ //g' | head
+$$ zcat Homo_sapiens.GRCh38.87_badStructure.table.gz | sed 's/gene_id "//' | sed 's/gene_name "//' | sed 's/gene_biotype "//' | sed 's/"//g' | sed '1i\Geneid\tGeneSymbol\tChromosome\tClass\tStrand\tLength' | sed 's/ //g' | head
 
 </pre>
 
